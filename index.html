@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qtdh</title>
+  <link rel="stylesheet" href="./css/style.css" />
+  <link rel="stylesheet" href="./css/en.css" />
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://unpkg.com/vis-network@9.1.5/standalone/umd/vis-network.min.js"></script>
+  <link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+
+ </head>
+ <body>
+  <header class="h">
+   <h1 class="logo_name">
+    <span class="prompt">
+     <ion-icon name="planet-outline"></ion-icon>
+    </span> Qtdh
+   </h1>
+   <div class="control">
+    <a class="language" href="./ar/">
+     <ion-icon name="language-outline"></ion-icon>
+    </a>
+    <div class="theme_toggle_container">
+     <button id="themeToggle">
+      <ion-icon name="settings-outline"></ion-icon>
+     </button>
+    
+     <div class="dropdown" id="themeDropdown">
+      <button data-theme="light">light </button>
+      <button data-theme="dark">dark </button>
+      <button data-theme="system">system</button>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container">
+   <main dir="ltr">
+     
+
+    <h2>
+     <span class="">#</span> info
+    </h2>
+         <div class="terminal_bg">
+         <div class="terminal">
+           <div class="terminal_dote">
+             <span></span>
+             <span></span>
+             <span></span>
+             </div>
+      <div class="ascii">
+ <!--   <pre><code>██████╗  ███████╗ ██████╗
+██╔══██╗╚════██║ ██╔════╝ 
+██║  ██║    ██╔╝ ███████╗
+██║  ██║   ██╔╝  ██╔═══██╗
+██████╔╝   ██║   ╚██████╔╝
+╚═════╝    ╚═╝    ╚═════╝</code></pre> -->
+    <pre><code>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠙⠻⢶⣄⡀⠀⠀⠀⢀⣤⠶⠛⠛⡇⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣇⠀⠀⣙⣿⣦⣤⣴⣿⣁⠀⠀⣸⠇⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣡⣾⣿⣿⣿⣿⣿⣿⣿⣷⣌⠋⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣷⣄⡈⢻⣿⡟⢁⣠⣾⣿⣦⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⠘⣿⠃⣿⣿⣿⣿⡏⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠈⠛⣰⠿⣆⠛⠁⠀⡀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣦⠀⠘⠛⠋⠀⣴⣿⠁⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣾⣿⣿⣿⣿⡇⠀⠀⠀⢸⣿⣏⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣠⣶⣿⣿⣿⣿⣿⣿⣿⣿⠿⠿⠀⠀⠀⠾⢿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣠⣿⣿⣿⣿⣿⣿⡿⠟⠋⣁⣠⣤⣤⡶⠶⠶⣤⣄⠈⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢰⣿⣿⣮⣉⣉⣉⣤⣴⣶⣿⣿⣋⡥⠄⠀⠀⠀⠀⠉⢻⣄⠀⠀⠀⠀⠀
+⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣋⣁⣤⣀⣀⣤⣤⣤⣤⣄⣿⡄⠀⠀⠀⠀
+⠀⠀⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⠋⠉⠁⠀⠀⠀⠀⠈⠛⠃⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</code></pre>
+      </div>
+    <div class="code-box" id="draggable-box">
+      <div class="">   <span class="tr_txt3">[?] about me</span> <br></div>
+      <div class="update_line"><span class="tr_txt">nickname:</span> <span class="tr_txt2"> أبا قُتادة ~  @qtdh</div>
+      
+     <br>
+      <div class=""><span class="tr_txt3 ">[?] about web</span> <br></div>
+      <div class="update_line"><span class="tr_txt">goal:</span> <span class="tr_txt2 ">space where i can post whatever i want freely / unlimated</span></div>
+      <div class="update_line">   <span class="tr_txt ">created</span>: <span class="tr_txt2">may 05, 2025</span><br></div>
+      <div class="update_line">  <span class="tr_txt ">lastUpdate</span>: <span class="tr_txt2 time_ago" dir="ltr">2025-05-07T18:30</span><br></div>
+      <div class="update_line"><span class="tr_txt">views:</span> <span class="tr_txt2"><span id="counter"><span class="doted">loading</span></span></span></div>
+     <br>
+      <div class=""><span class="tr_txt3 ">[?] news</span> <br></div>
+      
+     <div class="update-info" id="update-details">
+      <p dir="ltr" class="bracket"> <span class="doted">loading</span> <br> (ur wi-fi soooooo slowly, u living 1994 ._.?) </p>
+     </div>
+    </div>
+    </div>
+         </div>
+        <button id="back_to_top"><ion-icon name="chevron-up-circle-outline"></ion-icon></button>
+
+    <h2>
+     <span class="">#</span> map
+    </h2>
+    <div class="note_section">
+     <div class="note">
+      <ion-icon name="alert-circle-outline"></ion-icon>click to open
+     </div>
+     <div>
+      <div class="note">
+       <ion-icon name="alert-circle-outline"></ion-icon> can drag it
+      </div>
+     </div>
+     <div class="note">
+      <ion-icon name="alert-circle-outline"></ion-icon> can zome
+     </div>
+    </div>
+    <div id="network"></div>
+    <!--
+          		<div data-aos-delay="800" data-aos="fade-up"class="itw"><svg></svg></div>
+-->
+   </main>
+  </div>
+  <footer>
+   <p>
+    <ion-icon name="logo-tux"></ion-icon> open source foraver
+   </p>
+   <div class="icon">
+     <a class="foooter_link" href="https://github.com/dyaa-edin">
+    <ion-icon name="logo-github"></ion-icon>
+     </a>
+     <a class="foooter_link" href="https://t.me/devo_63">
+    <ion-icon name="paper-plane-outline"></ion-icon>
+     </a>
+     <a class="foooter_link" href="https://www.youtube.com/@aba_qtdh">
+    <ion-icon name="logo-youtube"></ion-icon>
+     </a>
+     <a class="foooter_link" href="mailto:dyaa_contact@yahoo.com">
+    <ion-icon name="mail-outline"></ion-icon>
+     </a>
+     <a class="foooter_link" href="https://x.com/dyaa_dev">
+    <ion-icon name="logo-twitter"></ion-icon>
+     </a>
+     <a class="foooter_link" href="https://www.instagram.com/dyaa_dn?igsh=MWxjemZ2anZwemU2Zg==">
+    <ion-icon name="logo-instagram"></ion-icon>
+     </a>
+   </div>
+  </footer>
+
+  <script type="module" src="./js/view.js"></script>
+  <script src="./js/script.js"></script>
+  <script src="./js/tg.js"></script>
+  <script src="./js/time_ago.js"></script>
+  <script src="./js/home.js"></script>
+ </body>
+</html>

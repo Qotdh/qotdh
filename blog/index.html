@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>d76 - blog</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/en.css" />
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  </head>
+  <h1 class="title">
+    <span class="prompt">~/</span>blog
+  </h1>
+  <body class="terminal-bg" id="blur">
+    <button id="back_to_top">
+      <ion-icon name="chevron-up-circle-outline"></ion-icon>
+    </button>
+    <header class="h">
+      <a href="../" class="back_to_home">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </a>
+      <div class="control">
+        <a class="language" href="../ar/">
+          <ion-icon name="language-outline"></ion-icon>
+        </a>
+        <div class="theme_toggle_container">
+          <button id="themeToggle">
+            <ion-icon name="settings-outline"></ion-icon>
+          </button>
+          <div class="dropdown" id="themeDropdown">
+            <button data-theme="light">light </button>
+            <button data-theme="dark">dark </button>
+            <button data-theme="system">system</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <div class="blog_container">
+      <main>
+        <section class="blog_list">
+    <div class="patch">
+           <div class="terminal_dote">
+             <span></span>
+             <span></span>
+             <span></span>
+             </div>
+      <p>$ pwd <br>/<a href="../">home</a>/<a href="./">blog</a>
+      </p>
+    </div>
+          <article class="animate-up-bouncy">
+            <h2 class="blog_title">
+              <a href="./1/">front-end</a>
+            </h2>
+            <p>some tricks will help u glow ur projects to the next version.</p>
+            <p class="blog_date">may 04, 2025</p>
+            <p class="time_ago time_ago_stye">2025-05-04T22:10</p>
+          </article>
+          <article class="animate-up-bouncy2">
+            <h2 class="blog_title">
+              <a href="./1/"> linux ?</a>
+            </h2>
+            <p>talking about why we love Linux ♥_♥ ?</p>
+            <p class="blog_date">may 04, 2025</p>
+             <p class="time_ago time_ago_stye">2025-05-04T22:10</p>
+          </article>
+        </section>
+      </main>
+    </div>
+    <script>
+      function getTimeAgo(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const seconds = Math.floor((now - date) / 1000);
+        const intervals = {
+          year: 31536000,
+          month: 2592000,
+          day: 86400,
+          hour: 3600,
+          minute: 60,
+          second: 1
+        };
+        for (const [unit, value] of Object.entries(intervals)) {
+          const count = Math.floor(seconds / value);
+          if (count >= 1) {
+            return `${count} ${unit}${count > 1 ? 's' : ''} ago`;
+          }
+        }
+        return "just now";
+      }
+      document.querySelectorAll(".time_ago").forEach(element => {
+        const dateTime = element.textContent;
+        element.textContent = getTimeAgo(dateTime);
+      });
+    </script>
+    <script src="../js/script.js"></script>
+  </body>
+</html>

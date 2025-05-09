@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Rakkas&family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap');
+
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
+* {
+   line-height: 1.6;
+}
+.dropdown button {
+  text-align: right;
+}
+.update_line, .home_title{
+  direction: rtl;
+}
+.update-info, .code-box, .header{
+  font-size: 1rem !important;
+}

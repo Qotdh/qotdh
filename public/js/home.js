@@ -2,10 +2,7 @@
   { id: 0, label: 'In this web', title: '#' },
   { id: 1, label: 'blog', title: './blog/' },
   { id: 2, label: 'comments', title: './comments/' },
-  { id: 3, label: 'report', title: './blog/1/' },
-  { id: 4, label: 'projects', title: './blog/1/' },
-  { id: 5, label: 'my book', title: './blog/1/' },
-  { id: 6, label: 'شعر', title: './blog/1/' },
+  { id: 3, label: 'report', title: './report/' },
 ]);
 // create an array with edges
 var edges = new vis.DataSet([

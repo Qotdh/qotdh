@@ -62,7 +62,7 @@
             <p class="blog_date">may 04, 2025</p>
             <p class="time_ago time_ago_stye">2025-05-04T22:10</p>
           </article>
-          <article class="animate-up-bouncy2">
+          <article class="animate-up-bouncy">
             <h2 class="blog_title">
               <a href="./1/"> linux ?</a>
             </h2>
@@ -73,32 +73,9 @@
         </section>
       </main>
     </div>
-    <script>
-      function getTimeAgo(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const seconds = Math.floor((now - date) / 1000);
-        const intervals = {
-          year: 31536000,
-          month: 2592000,
-          day: 86400,
-          hour: 3600,
-          minute: 60,
-          second: 1
-        };
-        for (const [unit, value] of Object.entries(intervals)) {
-          const count = Math.floor(seconds / value);
-          if (count >= 1) {
-            return `${count} ${unit}${count > 1 ? 's' : ''} ago`;
-          }
-        }
-        return "just now";
-      }
-      document.querySelectorAll(".time_ago").forEach(element => {
-        const dateTime = element.textContent;
-        element.textContent = getTimeAgo(dateTime);
-      });
-    </script>
+
     <script src="../js/script.js"></script>
+    <script src="../js/animate.js"></script>
+    <script src="../js/time_ago.js"></script>
   </body>
 </html>

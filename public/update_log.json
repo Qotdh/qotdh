@@ -1,8 +1,8 @@
 {
-    "lastUpdate": "2025-05-07T18:30",
+    "lastUpdate": "2025-05-10T21:30",
     "pub": "may 05, 2025",
     "newFeatures": [
-      " update comments page"
+      "add animation"
     ],
     "bugFixes": [
       "smooth / fast browsimg"

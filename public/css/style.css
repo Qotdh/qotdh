@@ -1,4 +1,4 @@
-* {
+  * {
   line-height: 1.6;
    font-weight: 400;
 }
@@ -248,7 +248,6 @@ code{
 .patch{
   background-color: black;
   color: white;
-  max-width:750px;
   width:100%;
   position: relative;
   padding: 0 1rem;
@@ -460,7 +459,7 @@ article{
 .blog_container {
    max-width: 800px;
    margin: 0 auto;
-   padding: 2rem 2rem 0 0;
+   padding: 2rem 2rem 0;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -621,21 +620,7 @@ article{
   height: 40px;
   border-radius: 50%;
 }
-.comment_card{
-  direction: rtl;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  
-  border-bottom: 1px dashed #333;
-  border-radius: 0;
-  padding: 0 1rem 1rem;
-  min-width: 400px;
-  max-width: 600px;
-  line-height: 1;
-  font-size: .8rem ;
-  position: relative;
-}
+
 .comment_time{
   color: var(--color-comment);
   position: absolute;
@@ -660,27 +645,6 @@ article{
   border-radius: 50%;
   background-color: #222;
 }
-/* comment */
-.comment_title{
-  display: flex;
-  align-items: center;
-  justify-content: right;
-  flex-direction: row;
-  gap: 1rem;
-  font-size: 1.2rem;
-  
-}
-.comment_message{
-  padding: 0;
-  margin: 0;
-  font-size: 1rem;
-  text-align: justify;
-}
-.comment_img{
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
 .comment_card{
   direction: rtl;
   display: flex;
@@ -688,11 +652,11 @@ article{
   gap: 0;
   border-bottom: 1px dashed #333;
   border-radius: 0;
-  padding: 0 1rem 1rem;
-  min-width: 400px;
-  max-width: 600px;
+  padding: 0 0 1rem;
+  margin: 0 auto;
+  width: 100%;
   line-height: 1;
-  font-size: .8rem ;
+  font-size: 12px ;
   position: relative;
 }
 .comment_time{

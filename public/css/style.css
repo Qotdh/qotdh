@@ -457,8 +457,7 @@ article{
   border-radius: 8px;
   padding: 0 1rem 2rem;
   width: 100%;
-  min-width: 300px;
-  max-width: 600px;
+  max-width: 400px;
   line-height: 1;
   font-size: .8rem ;
   position: relative;
@@ -477,6 +476,8 @@ article{
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  padding: 0;
+  margin: 0 2rem 0 0;
   max-width: 400px;
 }
 .blog_title, .comment_title{

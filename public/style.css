@@ -214,17 +214,7 @@ code{
   width: 100%;
   color: var(--terminal-color);
 }
-@media (min-width:600px){
-  .terminal {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
-.info{
-  display: none;
-}
 
-}
 @media (max-width:600px){
   .terminal {
   display: flex;
@@ -499,6 +489,7 @@ article{
   right: 1rem;
 }
 @media (min-width:800px){
+
 .control{
    right: calc((100% - 800px) / 2);
 }
@@ -734,4 +725,26 @@ article{
   direction: ltr;
   display: flex;
   gap: 4px;
+}
+@media (min-width:600px){
+  .terminal {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.info{
+  display: none;
+}
+  .code-box {
+   border-radius: 8px;
+   width: 100%;
+   margin: 0 auto;
+   margin-left: -10px;
+   position: relative;
+   cursor: grab;
+   user-select: none;
+   padding: 16px 0 ;
+   font-size: 14px;
+}
+
 }

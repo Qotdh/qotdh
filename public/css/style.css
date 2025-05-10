@@ -544,7 +544,6 @@ article{
 }
 
 
-/* إضافة النقاط الثلاث تدريجياً باستخدام animation */
 .doted::after {
   content: '';
   display: inline-block;

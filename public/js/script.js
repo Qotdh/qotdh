@@ -100,8 +100,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-//blur
-window.addEventListener('load', function() {
-  document.getElementById('blur').classList.add('loaded');
-});
+
 AOS.init();

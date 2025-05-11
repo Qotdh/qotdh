@@ -500,50 +500,24 @@ article{
 }
 .animate-up-bouncy {
   opacity: 0;
+  filter: blur(8px);
   animation: animateUpBouncy 800ms ease-in-out forwards;
 }
-#blur {
-  filter: blur(8px);
-  transition: filter 1s ease;
-}
-
-#blur.loaded {
-  filter: blur(0);
-}
-@keyframes customBouncy {
-  0% {
-    transform: translateY(40px);
-    opacity: 0;
-  }
-  50% {
-    transform: translateY(-20px);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-[data-aos="custom-bouncy"] {
-  opacity: 0;
-  transform: translateY(40px);
-  transition-property: transform, opacity;
-  animation: customBouncy 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
 @keyframes animateUpBouncy {
   0% {
     transform: translateY(40px);
     opacity: 0;
+    filter: blur(8px);
   }
   50% {
     transform: translateY(-20px);
     opacity: 0.5;
+    filter: blur(4px);
   }
   100% {
     transform: translateY(0);
     opacity: 1;
+    filter: blur(0);
   }
 }
 
@@ -575,7 +549,7 @@ article{
   
 }
 .comment_list{
-  margin: 1rem 0 2rem;
+  margin: 1.2rem 0 2rem;
   
 }
 .comment_message{

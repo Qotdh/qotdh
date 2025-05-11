@@ -499,24 +499,14 @@ article{
 }
 }
 .animate-up-bouncy {
-  opacity: 0;
-  filter: blur(8px);
+  filter: blur(12px);
   animation: animateUpBouncy 800ms ease-in-out forwards;
 }
 @keyframes animateUpBouncy {
   0% {
-    transform: translateY(40px);
-    opacity: 0;
-    filter: blur(8px);
-  }
-  50% {
-    transform: translateY(-20px);
-    opacity: 0.5;
-    filter: blur(4px);
+    filter: blur(12px);
   }
   100% {
-    transform: translateY(0);
-    opacity: 1;
     filter: blur(0);
   }
 }

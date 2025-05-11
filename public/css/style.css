@@ -412,16 +412,7 @@ footer a {
   z-index: 9999;
   opacity: 0;
 }
-#blur {
-  opacity: 0;
-  filter: blur(2px);
-  transition: all 1s ease;
-}
 
-#blur.loaded {
-  opacity: 1;
-  filter: blur(0);
-}
 
 @keyframes slideUp {
   from {
@@ -507,42 +498,51 @@ article{
    right: calc((100% - 800px) / 2);
 }
 }
-@keyframes blurOut {
-  0% {
-    backdrop-filter: blur(8px);
-  }
-  100% {
-    backdrop-filter: blur(0);
-  }
-}
 .animate-up-bouncy {
   opacity: 0;
   animation: animateUpBouncy 800ms ease-in-out forwards;
 }
+#blur {
+  filter: blur(8px);
+  transition: filter 1s ease;
+}
+
+#blur.loaded {
+  filter: blur(0);
+}
+@keyframes customBouncy {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-20px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+[data-aos="custom-bouncy"] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition-property: transform, opacity;
+  animation: customBouncy 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
 
 @keyframes animateUpBouncy {
   0% {
-    transform: translateX(60px);
+    transform: translateY(40px);
     opacity: 0;
   }
-  40% {
-    transform: translateX(-15px);
+  50% {
+    transform: translateY(-20px);
     opacity: 0.5;
   }
-  60% {
-    transform: translateX(10px);
-    opacity: 1;
-  }
-  75% {
-    transform: translateX(-5px);
-    opacity: 1;
-  }
-  90% {
-    transform: translateX(2px);
-    opacity: 1;
-  }
   100% {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }

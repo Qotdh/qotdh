@@ -1,32 +1,67 @@
 <!DOCTYPE html>
 <html lang="ar">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>المقالات - مدونتي</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>0xDya - مقالات</title>
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/ar.css" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-</head>
-      <h1 class="title"><span class="prompt">~/</span>blog</h1>
-<body class="terminal-bg">
-  <a href="index.html"class="back_to_home"><ion-icon name="chevron-back-outline"></ion-icon></a>
-  <div class="container">
-    <header>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  </head>
+  <h1 class="title">
+    <span class="prompt">~/</span>المقالات
+  </h1>
+  <body class="terminal-bg" id="">
+    <button id="back_to_top">
+      <ion-icon name="chevron-up-circle-outline"></ion-icon>
+    </button>
+    <header class="h">
+      <a href="../" class="back_to_home">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </a>
+      <div class="control">
+        <a class="language" href="../../">
+          <ion-icon name="language-outline"></ion-icon>
+        </a>
+        <div class="theme_toggle_container">
+          <button id="themeToggle">
+            <ion-icon name="settings-outline"></ion-icon>
+          </button>
+          <div class="dropdown" id="themeDropdown">
+            <button data-theme="light">light </button>
+            <button data-theme="dark">dark </button>
+            <button data-theme="system">system</button>
+          </div>
+        </div>
+      </div>
     </header>
+    <div class="blog_container">
+        <section class="blog_list">
+    <div class="patch">
+   
+      <p>$ pwd <br>/<a href="../">home</a>/<a href="./">blog</a>
+      </p>
+    </div>
+          <article class="animate-up-bouncy">
+            <h2 class="blog_title">
+              <a href="../../blog/1/">هل win فعلا سيء ؟</a>
+            </h2>
+            <p>نتكلم قليلا عن توزيعات لينكس وكيف تحمل التوزيعة المناسبة لحتياجاتك</p>
+            <p class="blog_date">جوان 3, 2025</p>
+             <p class="time_ago time_ago_stye">2025-06-03T19:10</p>
+          </article>
+        </section>
+    </div>
 
-    <main>
-      <section class="posts">
-        <article>
-          <h2><a href="article.html">كيف بدأت مع لينكس؟</a></h2>
-          <p>تجربتي الأولى مع Ubuntu وكيف غيرت طريقة عملي كمطور.</p>
-        </article>
-        <article>
-          <h2><a href="article.html">نصائح لتحسين سير عملك في VSCode</a></h2>
-          <p>بعض الإضافات والاختصارات التي لا غنى عنها.</p>
-        </article>
-      </section>
-    </main>
-  </div>
-</body>
+    <script src="../../js/script.js"></script>
+    <script src="../../js/animate.js"></script>
+    <script src="../../js/time_ago.js"></script>
+  </body>
 </html>

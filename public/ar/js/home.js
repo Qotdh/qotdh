@@ -1,11 +1,8 @@
  var nodes = new vis.DataSet([
-  { id: 0, label: 'In this web', title: '#' },
-  { id: 1, label: 'blog', title: '../blog/' },
-  { id: 2, label: 'comments', title: '../comments' },
-  { id: 3, label: 'report', title: './blog/1/' },
-  { id: 4, label: 'projects', title: './blog/1/' },
-  { id: 5, label: 'my book', title: './blog/1/' },
-  { id: 6, label: 'شعر', title: './blog/1/' },
+  { id: 0, label: 'في هذا الموقع', title: '#' },
+  { id: 1, label: 'المقالات', title: './blog/' },
+  { id: 2, label: 'التعلقات', title: '../comments/' },
+  { id: 3, label: 'الابلاغ', title: './report/' },
 ]);
 // create an array with edges
 var edges = new vis.DataSet([
@@ -145,12 +142,12 @@ function fetchUpdateDetails() {
         fetch("./update_log.json")
             .then(response => response.json())
             .then(data => {
-                let updateHTML =`<div class="update_line">   <span class="tr_txt ">created</span>: <span class="tr_txt2">${data.pub}</span><br></div>`;
+                let updateHTML =``;
 
-            updateHTML += ` <div class="update_line">  <span class="tr_txt ">lastUpdate</span>: <span class="tr_txt2" dir="ltr">${timeSinceUpdate(data.lastUpdate)}</span><br></div>`;
+            updateHTML += ``;
 
                 if (data.newFeatures.length > 0) {
-                    updateHTML += ` <div class="update_line"> <span class="tr_txt ">newFeatures</span>:`;
+                    updateHTML += ` <div class="update_line"> <span class="tr_txt ">features</span>:`;
                     data.newFeatures.forEach(feature => {
                         updateHTML += `<span class="tr_txt2">${feature}</span></div>`;
                     });

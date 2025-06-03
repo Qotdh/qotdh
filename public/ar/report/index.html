@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>write comment</title>
-        <link rel="stylesheet" href="../style.css" />
+    <title>report</title>
+        <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/en.css" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -28,7 +28,6 @@
 
    #contactForm label {
     display: block;
-    margin-bottom: 0.5rem;
     font-weight: bold;
     color: #ccc;
    }
@@ -44,17 +43,15 @@
     resize: none;
     min-height: 120px;
     direction: ltr;
-    margin-bottom: 1rem;
    }
   #username {
-    width: 200px;
+    width: 100%;
     padding: 0.8rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     background: var(--bg-color);
     color: var(--text-color);
     font-size: 1rem;
-    margin-bottom: 0.6rem;
     direction: ltr;
    }
 
@@ -143,25 +140,24 @@
    }
    .flex_center{
      display: flex;
-     justify-content: right;
+     flex-direction: column;
      min-width: 100%;
-    gap: 4px;
+    gap: 1rem;
+    margin-bottom: 1rem;
    }
 
    /* From Uiverse.io by csemszepp */
    .custum-file-upload {
-    height: 54px;
-    width: 50%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 20px;
     cursor: pointer;
     border: 2px dashed #e8e8e83d;
     background: var(--bg-color);
     color: var(--text-color);
-    padding: 8px 1rem;
+    padding: 4px 1rem;
     border-radius: 10px;
     text-align: center;
    }
@@ -206,20 +202,17 @@ img{
   padding: 0 0.8rem 0.1rem;
   direction: ltr;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 1rem;
     border-radius: 10px;
     background: var(--bg-color);
     color: grey;
 }
 
-.star-rating ion-icon{
-  margin-bottom:-3px;
-}
 .patch{
-  margin: 2rem 0;
+  margin: 1rem 0;
 }
 #image-name{
   color: grey;
+  font-size: 16px;
 }
 .back_to_home2{
    position: relative;
@@ -231,7 +224,7 @@ img{
   </style>
 </head>
   <h1 class="title">
-    <span class="prompt">~/</span>post comment
+    <span class="prompt">~/</span>report
   </h1>
 <body>
     <header class="h">
@@ -239,30 +232,28 @@ img{
         <ion-icon name="chevron-back-outline"></ion-icon>
       </a>
     </header>
-      <main>
+    <div class="blog_container">
     <div class="patch">
                  <div class="terminal_dote">
              <span></span>
              <span></span>
              <span></span>
              </div>
-      <p>$ pwd <br>/<a href="../../">home</a>/<a href="../">comments</a>/<a href="./">post comment</a>
+      <p>$ pwd <br>/<a href="../">home</a>/<a href="../">report</a>
       </p>
     </div>
 <form id="contactForm">
   <div class="flex_center">
     <input type="text" id="username" name="username" placeholder="name " required>
-   <label for="image" class="custum-file-upload">
-            <div class="text2">
-                <span id="image-name"> img</span>
-            </div>
-            <input type="file" id="image" name="image" accept="image/*" onchange="handleFileSelect('image')">
-        </label>
-    </div>
-    <textarea id="message" name="message" placeholder="type your comment  ..." required></textarea>
-      <div class="star-rating">
-   <ion-icon name="alert-circle-outline"></ion-icon>   ur comment will be added after review
+
+    <textarea id="message" name="message" placeholder="bugs  ..." required></textarea>
+    <label for="image" class="custum-file-upload">
+      <div class="text2">
+        <span id="image-name"> screenshot (recoment)</span>
       </div>
+      <input type="file" id="image" name="image" accept="image/*" onchange="handleFileSelect('image')">
+    </label>
+  </div>
     <div id="sending-message" style="display: none; color: red; font-weight: bold; margin-top: 10px;" dir="rtl">
     loading  ...
 </div>
@@ -272,8 +263,7 @@ img{
         <span class="alert-icon">✅</span>
         <span id="alert-message"></span>
     </div>
-
-        </main>
+    </div>
 <script>
 // دالة للتحكم في اختيار الملفات
 function handleFileSelect(inputId) {
@@ -308,7 +298,7 @@ function clearForm() {
     document.getElementById('username').value = ''; 
     document.getElementById('message').value = '';
     document.getElementById('image').value = '';
-    document.getElementById('image-name').textContent = 'تحميل صورة';
+    document.getElementById('image-name').textContent = 'screenshot (optional) ';
     document.getElementById('selected-image-name').textContent = '';
     selectedImageId = null;
 }
@@ -349,28 +339,25 @@ let caption = `usr: ${username}\nmsg: ${message}\n IP Address: ${ipAddress}`;
         text: caption
     };
     let headers = { 'Content-Type': 'application/json' };
-if (!image) {
-        showAlert('اختر صورة أولاً ثم ارسل', 'error');
-        return; // أوقف الإرسال
-    }
- if (image) {
-        const formData = new FormData();
-        formData.append('chat_id', 5962064921);
-        formData.append('photo', image);
-        formData.append('caption', caption);
-        endpoint = 'sendPhoto';
-        payload = formData;
-        headers = {};
-    } else if (selectedImageUrl) {
-        payload = JSON.stringify({
-            chat_id: 5962064921,
-            photo: selectedImageUrl,
-            caption: caption,
-        });
-        endpoint = 'sendPhoto';
-    }
+if (image) {
+    const formData = new FormData();
+    formData.append('chat_id', 5962064921);
+    formData.append('photo', image);
+    formData.append('caption', caption);
+    endpoint = 'sendPhoto';
+    payload = formData;
+    headers = {};
+} else {
+    // إذا لم تكن هناك صورة، أرسل فقط نص
+    endpoint = 'sendMessage';
+    payload = {
+        chat_id: 5962064921,
+        text: caption
+    };
+    headers = { 'Content-Type': 'application/json' };
+}
 
-    const url = `https://api.telegram.org/bot7741815017:AAGTPiZID3RsHP-H9N67NVXKlrTygrMh-VY/${endpoint}`;
+    const url = `https://api.telegram.org/bot7765880629:AAGyDPBsisb9K9jQvgBYtph7kTrFII0V340/${endpoint}`;
 
     try {
         const response = await fetch(url, {

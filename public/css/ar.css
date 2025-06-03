@@ -6,13 +6,18 @@
 * {
    line-height: 1.6;
     font-family: 'Noto Kufi Arabic', sans-serif;
-    font-weight: 200;
+    font-weight: 400;
   }
 
-.dropdown button {
-  text-align: right;
-}
-.update_line, .home_title{
+  .dropdown button {
+    text-align: right;
+  } 
+
+  .terminal_dote {
+    left: 0 !important;
+    top: 1.2rem !important;
+  }
+  .update_line, h2, .home_title, .note_section{
   direction: rtl;
 }
 .update-info, .code-box, .header{

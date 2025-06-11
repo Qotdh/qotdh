@@ -1,10 +1,10 @@
 {
-    "lastUpdate": "2025-05-10T21:30",
-    "pub": "may 05, 2025",
+    "lastUpdate": "2025-06-11T21:30",
+    "pub": "ماي 05, 2025",
     "newFeatures": [
-      "add blog page"
+      "تعريب الموققع"
     ],
     "bugFixes": [
-      "smooth / fast browsimg"
+      "زيادة سلاسة الموقع"
     ]
 }

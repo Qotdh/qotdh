@@ -27,10 +27,11 @@
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script src="https://unpkg.com/vis-network@9.1.5/standalone/umd/vis-network.min.js"></script>
   <link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400..700&family=Playpen+Sans+Arabic:wght@100..800&display=swap" rel="stylesheet">
 
  </head>
 
- <body>
+ <body dir="rtl">
   <header class="h">
    <h1 class="logo_name">
     <span class="prompt">
@@ -47,35 +48,69 @@
      </button>
     
      <div class="dropdown" id="themeDropdown">
-      <button data-theme="light">light </button>
-      <button data-theme="dark">dark </button>
-      <button data-theme="system">system</button>
+      <button data-theme="light">فاتح </button>
+      <button data-theme="dark">داكن </button>
+      <button data-theme="system">تلقائي</button>
      </div>
     </div>
    </div>
   </header>
   <div class="container">
-   <main dir="ltr">
-     
+   <main >
+     <h1 class="home_title_font">الموقع حاليا ممتلئ مشاكل و اخطاء <br>ولكن كسلت اصلحهم
+     🦆 💔
+     </h1>
+<br><br>
+    <h2 class="home_title_font">
+     <span >#</span>
+     شاشة المعلومات
+     </h2>
+<div class="terminal_bg">
+  <div class="terminal">
+    <div class="terminal_dote">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
 
-    <h2>
-     <span class="">#</span> info
-    </h2>
-         <div class="terminal_bg">
-         <div class="terminal">
-           <div class="terminal_dote">
-             <span></span>
-             <span></span>
-             <span></span>
-             </div>
-      <div class="ascii">
- <!--   <pre><code>██████╗  ███████╗ ██████╗
-██╔══██╗╚════██║ ██╔════╝ 
-██║  ██║    ██╔╝ ███████╗
-██║  ██║   ██╔╝  ██╔═══██╗
-██████╔╝   ██║   ╚██████╔╝
-╚═════╝    ╚═╝    ╚═════╝</code></pre> -->
-    <pre><code>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠙⠻⢶⣄⡀⠀⠀⠀⢀⣤⠶⠛⠛⡇⠀⠀⠀
+    <div class="code-box" id="draggable-box">
+    <div class="code_box_content" >
+      <div><span class="tr_txt3">[؟] أنا</span><br></div>
+
+      <div class="update_line"><span class="tr_txt">الاسم:</span> <span class="tr_txt2">ضياء الدين | 0xdya </span></div>
+      <div class="update_line"><span class="tr_txt">العمر:</span> <span class="tr_txt2">17</span></div>
+
+      <br>
+      <div><span class="tr_txt3">[؟] عن الموقع</span><br></div>
+
+      <div class="update_line"><span class="tr_txt">الهدف:</span>
+        <span class="tr_txt2">مساحة حرة لنشر ما أريده بدون قيود</span>
+      </div>
+
+      <div class="update_line"><span class="tr_txt">تاريخ الإنشاء:</span> <span class="tr_txt2">5 ماي 2025</span></div>
+      <div class="update_line"><span class="tr_txt">آخر تحديث:</span>
+        <span class="tr_txt2 time_ago" >2025-06-03T21:30</span>
+      </div>
+
+      <div class="update_line"><span class="tr_txt">عدد الزيارات:</span>
+        <span class="tr_txt2"><span id="counter"><span class="doted">جارٍ التحميل...</span></span></span>
+      </div>
+
+      <br>
+      <div><span class="tr_txt3">[؟] آخر الأخبار</span><br></div>
+
+      <div class="update-info" id="update-details">
+        <p dir="rtl" class="bracket">
+          <span class="doted">جارٍ التحميل...</span><br><!--
+          (اتصال الإنترنت لديك بطيء جدًا، هل أنت من عام 1994؟ ._.) -->
+        </p>
+      </div>
+    
+    </div>
+    </div>
+
+    <div class="ascii">
+          <pre><code>⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⠙⠻⢶⣄⡀⠀⠀⠀⢀⣤⠶⠛⠛⡇⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣇⠀⠀⣙⣿⣦⣤⣴⣿⣁⠀⠀⣸⠇⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣡⣾⣿⣿⣿⣿⣿⣿⣿⣷⣌⠋⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣷⣄⡈⢻⣿⡟⢁⣠⣾⣿⣦⠀⠀⠀⠀
@@ -89,45 +124,29 @@
 ⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣟⣋⣁⣤⣀⣀⣤⣤⣤⣤⣄⣿⡄⠀⠀⠀⠀
 ⠀⠀⠀⠀⠙⠿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⠋⠉⠁⠀⠀⠀⠀⠈⠛⠃⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</code></pre>
-      </div>
-    <div class="code-box" id="draggable-box">
-      <div class="">   <span class="tr_txt3">[?] about me</span> <br></div>
-      <div class="update_line"><span class="tr_txt">name:</span> <span class="tr_txt2">dya</div>
-      <div class="update_line"><span class="tr_txt">age:</span> <span class="tr_txt2">17</div>
-      
-     <br>
-      <div class=""><span class="tr_txt3 ">[?] about web</span> <br></div>
-      <div class="update_line"><span class="tr_txt">goal:</span> <span class="tr_txt2 ">space where i can post whatever i want freely / unlimated</span></div>
-      <div class="update_line">   <span class="tr_txt ">created</span>: <span class="tr_txt2">may 05, 2025</span><br></div>
-      <div class="update_line">  <span class="tr_txt ">lastUpdate</span>: <span class="tr_txt2 time_ago" dir="ltr">2025-06-03T21:30</span><br></div>
-      <div class="update_line"><span class="tr_txt">views:</span> <span class="tr_txt2"><span id="counter"><span class="doted">loading</span></span></span></div>
-     <br>
-      <div class=""><span class="tr_txt3 ">[?] news</span> <br></div>
-      
-     <div class="update-info" id="update-details">
-      <p dir="ltr" class="bracket"> <span class="doted">loading</span> <br> (ur wi-fi soooooo slowly, u living 1994 ._.?) </p>
-     </div>
+
     </div>
-    </div>
-         </div>
+  </div>
+</div>
         <button id="back_to_top"><ion-icon name="chevron-up-circle-outline"></ion-icon></button>
 
-    <h2>
-     <span class="">#</span> map
+    <h2 class="home_title_font">
+     <span>#</span> الخريطة
     </h2>
-    <div class="note_section">
-     <div class="note">
-      <ion-icon name="alert-circle-outline"></ion-icon>click to open
-     </div>
-     <div>
-      <div class="note">
-       <ion-icon name="alert-circle-outline"></ion-icon> can drag it
-      </div>
-     </div>
-     <div class="note">
-      <ion-icon name="alert-circle-outline"></ion-icon> can zome
-     </div>
+<div class="note_section">
+  <div class="note">
+    <ion-icon name="alert-circle-outline"></ion-icon>انقر لفتح
+  </div>
+  <div>
+    <div class="note">
+      <ion-icon name="alert-circle-outline"></ion-icon>يمكن سحبه
     </div>
+  </div>
+  <div class="note">
+    <ion-icon name="alert-circle-outline"></ion-icon>يمكن التكبير
+  </div>
+</div>
+
     <div id="network"></div>
     <!--
           		<div data-aos-delay="800" data-aos="fade-up"class="itw"><svg></svg></div>
@@ -139,22 +158,22 @@
     <ion-icon name="logo-tux"></ion-icon> open source foraver
    </p>
    <div class="icon">
-     <a class="foooter_link" href="https://github.com/qotdh">
+     <a class="foooter_link" href="https://github.com/0xdya">
     <ion-icon name="logo-github"></ion-icon>
      </a>
-     <a class="foooter_link" href="https://t.me/devo_63">
+     <a class="foooter_link" href="https://t.me/oxdya">
     <ion-icon name="paper-plane-outline"></ion-icon>
      </a>
      <a class="foooter_link" href="https://www.youtube.com/@0xDya">
     <ion-icon name="logo-youtube"></ion-icon>
      </a>
-     <a class="foooter_link" href="mailto:dyaa_contact@yahoo.com">
+     <a class="foooter_link" href="mailto:0xdyaa@gmail.com">
     <ion-icon name="mail-outline"></ion-icon>
      </a>
-     <a class="foooter_link" href="https://x.com/dyaa_dev">
+     <a class="foooter_link" href="https://x.com/0xdyaa">
     <ion-icon name="logo-twitter"></ion-icon>
      </a>
-     <a class="foooter_link" href="https://www.instagram.com/dyaa_dn?igsh=MWxjemZ2anZwemU2Zg==">
+     <a class="foooter_link" href="https://www.instagram.com/0xdaa">
     <ion-icon name="logo-instagram"></ion-icon>
      </a>
    </div>

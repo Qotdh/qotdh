@@ -1,77 +1,72 @@
- var nodes = new vis.DataSet([
-  { id: 0, label: 'In this web', title: '#' },
-  { id: 1, label: 'blog', title: './blog/' },
-  { id: 2, label: 'comments', title: './comments/' },
-  { id: 3, label: 'report', title: './report/' },
+var nodes = new vis.DataSet([
+  { id: 0, label: 'في هذا الموقع', link: '#', x: 0, y: 200 },
+  { id: 1, label: 'المقالات', link: './blog/', x:200, y: -100 },
+  { id: 2, label: 'التعليقات', link: './comments/', x: 0, y: 0 },
+  { id: 3, label: 'الإبلاغ', link: './report/', x: 0, y: 100 }
 ]);
-// create an array with edges
+
 var edges = new vis.DataSet([
   {from: 0, to: 1},
   {from: 0, to: 2},
-  {from: 0, to: 3},
-  {from: 0, to: 4},
-  {from: 0, to: 5},
-  {from: 0, to: 6},
-  {from: 0, to: 7},
-  {from: 0, to: 8},
-  {from: 4, to: 9},
+  {from: 0, to: 3}
 ]);
-// create a network
+
 var container = document.getElementById('network');
-var data = {
-  nodes: nodes,
-  edges: edges
+
+var data = { nodes: nodes, edges: edges };
+
+var options = {
+  nodes: {
+    shape: 'box',
+    font: {
+      color: "#ededed",
+      face: 'monospace',
+      size: 16,
+      align: 'center'
+    },
+    color: {
+      border: '#444444',
+      background: "#1e1e1e",
+    },
+    widthConstraint: { minimum: 90 },
+    heightConstraint: { minimum: 30 },
+    shadow: false,
+    hover: false,
+    chosen: false,
+    borderWidth: 1,
+    borderWidthSelected: 0
+  },
+  edges: {
+    color: {
+      color: '#888888',
+      highlight: '#888888'
+    },
+    width: 1.2,
+    hoverWidth: 0,
+    selectionWidth: 0,
+    smooth: true,
+    hover: false
+  },
+  interaction: {
+    dragNodes: true,
+    zoomView: true,
+    hover: false,
+    keyboard: true,
+    tooltips: false,
+    highlightNearest: false,
+    navigationButtons: false
+  },
+  tooltip: false
 };
-  var options = {
-    nodes: {
-      shape: 'box',
-      font: {
-        color: "#ededed",
-        face: 'monospace',
-        size: 16,
-        align: 'center'
-      },
-      color: {
-        border: '#444444',
-        background: "#1e1e1e",
-      },
-      widthConstraint: { minimum: 90 },
-      heightConstraint: { minimum: 30 },
-      shadow: false,
-      hover: false,
-      chosen: false, // ←←← مهم جدًا
-      borderWidth: 1,
-      borderWidthSelected: 0 // ←←← يوقف التأثير عند المرور
-    },
-    edges: {
-      color: {
-        color: '#888888',
-        highlight: '#888888' // نفس اللون لتجنب التأثير
-      },
-      width: 1.2,
-      hoverWidth: 0, // ←←← مهم
-      selectionWidth: 0,
-      smooth: true,
-      hover: false
-    },
-    interaction: {
-      dragNodes: true,
-      zoomView: true,
-      hover: false,
-      keyboard: true,
-      tooltips: false,
-      highlightNearest: false,
-      navigationButtons: false
-    },
-    tooltip: false
-  };
+
 var network = new vis.Network(container, data, options);
-network.on("click", function(params) {
+
+network.on("click", function (params) {
   if (params.nodes.length > 0) {
     const nodeId = params.nodes[0];
     const node = nodes.get(nodeId);
-    if (node && node.title) {
-      window.location.href = node.title;
+    if (node && node.link) {
+      window.location.href = node.link;
     }
   }
 });
@@ -147,14 +142,14 @@ function fetchUpdateDetails() {
             updateHTML += ``;
 
                 if (data.newFeatures.length > 0) {
-                    updateHTML += ` <div class="update_line"> <span class="tr_txt ">features</span>:`;
+                    updateHTML += ` <div dir="rtl"class="update_line"> <span class="tr_txt ">الإضافات</span>:`;
                     data.newFeatures.forEach(feature => {
                         updateHTML += `<span class="tr_txt2">${feature}</span></div>`;
                     });
                 }
 
                 if (data.bugFixes.length > 0) {
-                    updateHTML += ` <div class="update_line"><span class="tr_txt ">bugFixes</span>: `;
+                    updateHTML += ` <div dir="rtl" class="update_line"><span class="tr_txt ">الإصلاحات</span>: `;
                     data.bugFixes.forEach(fix => {
                         updateHTML += `<span class="tr_txt2">${fix}</span></div>`;
                     });

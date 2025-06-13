@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>0xDya - comments</title>
@@ -15,11 +15,57 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
   />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400..700&family=Playpen+Sans+Arabic:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    h1 { text-align: right; color: #fff; }
+    .comment-form textarea { width: 100%; padding: 10px 0; background: #111; color: #ccc; border: 1px solid #333; }
+    .comment-form button { width: 100%; padding: 10px; background: #222; color: #fff; border: none; cursor: pointer; margin-bottom:2rem}
+    .comment-card { background: #111; padding: 15px; border: 1px solid #333; margin-bottom: 10px; direction: rtl; }
+    .comment-card img { width: 40px; height: 40px; border-radius: 50%; margin-left: 10px; }
+    .comment-header { display: flex; align-items: center; margin-bottom: 10px; }
+    .comment-alert { background: #222; color: #0f0; padding: 10px; margin-bottom: 10px; text-align: center; }
+  #loginBtn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #ffffff10;
+    border: 1px solid #ffffff30;
+    color: #eee;
+    font-family: monospace;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    transition: background 0.3s ease;
+  }
+
+  #loginBtn:hover {
+    background-color: #ffffff20;
+  }
+
+  #loginBtn img {
+    width: 20px;
+    height: 20px;
+  }
+    .comment-container{
+      direction: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100% !important;
+    }
+    .patch_note{
+      font-size: 12px;
+      text-align: right ;
+      direction: rtl ;
+    }
+  </style>
+
   </head>
   <h1 class="title">
     <span class="prompt">~/</span>comments
   </h1>
-  <body id="">
+  <body>
     <header class="h">
       <a href="../" class="back_to_home">
         <ion-icon name="chevron-back-outline"></ion-icon>
@@ -42,134 +88,151 @@
         </div>
       </div>
     </header>
-    <div class="blog_container">
         <button id="back_to_top"><ion-icon name="chevron-up-circle-outline"></ion-icon></button>
+            <div class="container">
             <div class="patch">
                  <div class="terminal_dote">
              <span></span>
              <span></span>
              <span></span>
              </div>
-      <p>$ pwd <br>/<a href="../">home</a>/<a href="./">comments</a>
+      <p>$ pwd <br>/<a href="../">home</a>/<a href="./">blog</a>
       </p>
-                <p>$ echo "leave a comment" <br><a style="color: #58a6ff;" href="./write_comment.html">leave a comment</a>
-          </p>
-    </div><section class="comment_list">
+      <p>$ cd note.txt <br>
+      <span class="patch_note">
+      لا يتم جمع أي معلومات عند تسجيل دخول
+      </span>
+      </p>
+    </div>
 
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="../img/logo.jpg">
-              <p>أبا قُتادة </p>
-              <ion-icon name="construct-outline"></ion-icon>
+            <div class="comment-container">
+  <h1 dir="rtl"class="home_title_font">#التعليقات </h1>
+  <div id="alertBox"></div>
+  <div id="commentsList"></div>
+<button id="loginBtn" dir="rtl">
+  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+  <span>يجب تسجيل الدخول عبر Google لكتابة تعليق</span>
+</button>
+
+  <form id="commentForm" class="comment-form" style="display:none">
+    <textarea id="commentInput" placeholder="اكتب  تعليقك..." required></textarea>
+    <button type="submit">إرسال التعليق</button>
+  </form>
+</div>
+</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+      authDomain: "oxdyaa.firebaseapp.com",
+      projectId: "oxdyaa",
+      storageBucket: "oxdyaa.appspot.com",
+      messagingSenderId: "604062703590",
+      appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    const loginBtn = document.getElementById('loginBtn');
+    const commentForm = document.getElementById('commentForm');
+    const commentInput = document.getElementById('commentInput');
+    const commentsList = document.getElementById('commentsList');
+    const alertBox = document.getElementById('alertBox');
+
+    let currentUser = null;
+    loadComments();
+
+    loginBtn.addEventListener('click', async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        currentUser = result.user;
+        showAlert("تم تسجيل الدخول بنجاح!");
+        commentForm.style.display = "block";
+        loginBtn.style.display = "none";
+        loadComments();
+      } catch (error) {
+        console.error(error);
+        showAlert("فشل تسجيل الدخول", true);
+      }
+    });
+
+
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = commentInput.value.trim();
+      if (!text || !currentUser) return;
+
+      const name = currentUser.displayName || "زائر";
+      const avatar = currentUser.photoURL || `https://i.pravatar.cc/150?u=${Date.now()}`;
+
+      try {
+        await addDoc(collection(db, "comments"), {
+          name,
+          text,
+          avatar,
+          timestamp: serverTimestamp()
+        });
+        commentForm.reset();
+        showAlert("تم إرسال التعليق!");
+        loadComments();
+      } catch (err) {
+        console.error(err);
+        showAlert("خطأ أثناء الإرسال", true);
+      }
+    });
+
+    async function loadComments() {
+      commentsList.innerHTML = "<p style='text-align:center'>جاري تحميل التعليقات...</p>";
+      const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
+      const snap = await getDocs(q);
+      commentsList.innerHTML = "";
+      snap.forEach(doc => {
+        const d = doc.data();
+        const time = d.timestamp?.toDate().toLocaleString("ar-DZ") || "الآن";
+        commentsList.innerHTML += `
+          <div class="comment-card">
+            <div class="comment-header">
+              <img src="${d.avatar}" alt="${d.name}">
+              <div><strong>${d.name}</strong><br><small>${time}</small></div>
             </div>
-            <p class="comment_message">سبحان الله وبحمده، عدد خلقه، ورضا نفسه، وزنة عرشه، ومداد كلماته</p>
-            <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2024-08-10</p></div>
+            <div class="comment-text">${d.text}</div>
           </div>
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="https://dyaa-edin.netlify.app/img/pfp5.webp">
-              <p href="./1/"> Haytham</p>
-              <span class="comment_heart">
-              <img src="../img/logo.jpg"><i class='bx bxs-heart'></i>
-              </span>
-            </div>
-            <p class="comment_message">You have put a lot of time and work on this huge project you can do more for it
-<br>Good luck بالتوفيق</p>
-            <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2025-01-13T21:14</p>
-          </div>
-          </div>
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="https://dyaa-edin.netlify.app/img/usr.webp">
-              <p href="./1/">بيجاد </p>
-              <span class="comment_heart">
-              <img src="../img/logo.jpg"><i class='bx bxs-heart'></i>
-              </span>
-            </div>
-            <p class="comment_message">تبارك الرحمن ربي يوفقك انسان خلوق و متواضع نعم التربية وفقك الله 🤲</p>
-            <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2024-12-30T14:03</p>
-          </div>
-          </div>
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="https://dyaa-edin.netlify.app/img/pfp7.webp">
-              <p href="./1/">nadjwa</p>
-              <span class="comment_heart">
-              <img src="../img/logo.jpg"><i class='bx bxs-heart'></i>
-              </span>
-            </div>
-            <p class="comment_message">ماشاء الله تبارك الرحمن وفقك الله لما يحبه ويرضاه بارك الله فيك و في من رباك لك مني اطيب التماني بالنجاح و التوفيق</p>
-           <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2024-11-12T21:49</p>
-          </div>
-          </div>
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="https://dyaa-edin.netlify.app/img/usr.webp">
-              <p href="./1/">منصور عبد الهادي </p>
-              <span class="comment_heart">
-              <img src="../img/logo.jpg"><i class='bx bxs-heart'></i>
-              </span>
-            </div>
-            <p class="comment_message">ما شاء الله ...واصل</p>
-            <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2024-10-17T20:58</p>
-          </div>
-          </div>
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="https://dyaa-edin.netlify.app/img/pfp20.webp">
-              <p href="./1/"> brahim</p>
-              <span class="comment_heart">
-              <img src="../img/logo.jpg"><i class='bx bxs-heart'></i>
-              </span>
-            </div>
-            <p class="comment_message">إستمر في هذا المجال وفقك الله</p>
-            <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2024-08-16T09:59</p>
-          </div>
-          </div>
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="https://dyaa-edin.netlify.app/img/pfp1.webp">
-              <p href="./1/"> ibr</p>
-              <span class="comment_heart">
-              <img src="../img/logo.jpg"><i class='bx bxs-heart'></i>
-              </span>
-            </div>
-            <p class="comment_message">nice work</p>
-            <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2024-08-14T17:06</p>
-          </div>
-          </div>
-          <div class="comment_card animate-up-bouncy">
-            <div class="comment_title">
-              <img class="comment_img"src="https://dyaa-edin.netlify.app/img/luai.webp">
-              <p href="./1/">دحماني محمد لؤي </p>
-              <span class="comment_heart">
-              <img src="../img/logo.jpg"><i class='bx bxs-heart'></i>
-              </span>
-            </div>
-            <p class="comment_message">خرافيي استمر و طور من نفسك وفقك الله</p>
-            <div class="comment_time">
-            <ion-icon name="time-outline"></ion-icon>
-            <p class=" time_ago">2024-08-14T02:45</p>
-          </div>
-          </div>
-          
-        </section>
+        `;
+      });
+    }
+
+    function showAlert(message, error = false) {
+      alertBox.innerHTML = `<div class="comment-alert" style="color:${error ? 'red' : '#0f0'}">${message}</div>`;
+      setTimeout(() => alertBox.innerHTML = "", 4000);
+    }
+    function formatDate(date) {
+  const now = new Date();
+  const diff = now - date;
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours   = Math.floor(minutes / 60);
+  const days    = Math.floor(hours / 24);
+  const weeks   = Math.floor(days / 7);
+  const months  = Math.floor(days / 30);
+  const years   = Math.floor(days / 365);
+
+  if (seconds < 60) return "منذ ثوانٍ";
+  if (minutes < 60) return `منذ ${minutes} دقيقة`;
+  if (hours < 24)   return `منذ ${hours} ساعة`;
+  if (days < 7)     return `منذ ${days} يوم`;
+  if (weeks < 5)    return `منذ ${weeks} أسبوع`;
+  if (months < 12)  return `منذ ${months} شهر`;
+  return `منذ ${years} سنة`;
+}
+
+  </script>
     <script src="../js/script.js"></script>
-    <script src="../js/animate.js"></script>
-    <script src="../js/time_ago.js"></script>
-  </body>
+</body>
 </html>

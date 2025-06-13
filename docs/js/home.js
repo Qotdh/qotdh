@@ -1,18 +1,29 @@
 var nodes = new vis.DataSet([
-  { id: 0, label: 'في هذا الموقع', link: '#', x: 0, y: 200 },
-  { id: 1, label: 'المقالات', link: './blog/', x:200, y: -100 },
-  { id: 2, label: 'التعليقات', link: './comments/', x: 0, y: 0 },
-  { id: 3, label: 'الإبلاغ', link: './report/', x: 0, y: 100 }
+  { id: 0, label: 'في هذا الموقع', link: '#', x: 300, y: 0 },
+
+  { id: 1, label: 'المقالات', link: './blog/', x: 100, y: -120 },
+  { id: 2, label: 'التعليقات', link: './comments/', x: 100, y: -40 },
+  { id: 3, label: 'الإبلاغ', link: './report/', x: 100, y: 40 },
+
+  { id: 4, label: 'المشاريع', link: './projects/', x: 100, y: 120 },
+
+  { id: 6, label: 'ادعمني', link: './books/', x: -100, y: 160 },
 ]);
 
 var edges = new vis.DataSet([
-  {from: 0, to: 1},
-  {from: 0, to: 2},
-  {from: 0, to: 3}
+  { from: 0, to: 1 },
+  { from: 0, to: 2 },
+  { from: 0, to: 3 },
+  { from: 0, to: 4 },
+  { from: 0, to: 6 },
+  { from: 2, to: 3 },
+  { from: 2, to: 1 },
+  { from: 6, to: 3 },
+  { from: 6, to: 4 },
+  { from: 4, to: 1 },
 ]);
 
 var container = document.getElementById('network');
-
 var data = { nodes: nodes, edges: edges };
 
 var options = {
@@ -65,11 +76,19 @@ network.on("click", function (params) {
   if (params.nodes.length > 0) {
     const nodeId = params.nodes[0];
     const node = nodes.get(nodeId);
+    const radius = 150;
+const angles = [0, 60, 120, 180, 240, 300]; // درجات
+const positions = angles.map(angle => {
+  const rad = angle * Math.PI / 180;
+  return { x: radius * Math.cos(rad), y: radius * Math.sin(rad) };
+});
+
     if (node && node.link) {
       window.location.href = node.link;
     }
   }
 });
+
 
 // update card
 function makeDraggable(box) {

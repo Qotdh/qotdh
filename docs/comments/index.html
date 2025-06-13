@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>0xDya - comments</title>
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="../css/en.css" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -16,15 +16,201 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
   />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400..700&family=Playpen+Sans+Arabic:wght@100..800&display=swap" rel="stylesheet">
-  <style>
-    h1 { text-align: right; color: #fff; }
-    .comment-form textarea { width: 100%; padding: 10px 0; background: #111; color: #ccc; border: 1px solid #333; }
-    .comment-form button { width: 100%; padding: 10px; background: #222; color: #fff; border: none; cursor: pointer; margin-bottom:2rem}
-    .comment-card { background: #111; padding: 15px; border: 1px solid #333; margin-bottom: 10px; direction: rtl; }
-    .comment-card img { width: 40px; height: 40px; border-radius: 50%; margin-left: 10px; }
-    .comment-header { display: flex; align-items: center; margin-bottom: 10px; }
-    .comment-alert { background: #222; color: #0f0; padding: 10px; margin-bottom: 10px; text-align: center; }
-  #loginBtn {
+<style>
+*{
+  box-sizing: border-box;
+}
+  h1 {
+    text-align: right;
+    color: #fff;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .comment-container {
+    gap: 0;
+    width: 100%;
+  }
+
+  .comment-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    background: #111;
+    color: #ccc;
+    border: 1px solid #333;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    resize: vertical;
+  }
+
+  .comment-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    margin-bottom: 2rem;
+  }
+
+  .comment-form button:hover {
+    background-color: #333;
+  }
+
+  .comment-card {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #333;
+    border-radius: 10px;
+    direction: rtl;
+    box-shadow: 0 0 4px #00000055;
+    position: relative;
+    margin: 0 0 1rem;
+  }
+
+  .comment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .comment-header .info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .comment-card img,
+  .reply-card img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #444;
+  }
+
+  .reply-card img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .comment-header .name {
+    font-weight: bold;
+    color: #fafafa;
+    font-size: 0.95rem;
+  }
+
+  .comment-header .time {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .comment-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-top: 0.3rem;
+    color: #ddd;
+  }
+
+  .comment-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .comment-actions button, .reply-submit{
+    background: none;
+    color: #4ade80;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .comment-actions button:hover {
+    text-decoration: underline;
+  }
+
+  .reply-toggle, .delete-comment, .delete-reply{
+    background: none;
+    color: #ccc;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    font-size: 1.4rem;
+  }
+  .delete-comment{ top: 1rem; left: 3rem;}
+  .delete-reply{ top: 12px; left: 12px;font-size:1rem}
+  .reply-toggle{ top: 1rem; left: 1rem;}
+  .reply-toggle:hover {
+    color: #ccc;
+  }
+
+  .reply-form {
+    margin-top: 0.5rem;
+  }
+
+  .reply-input {
+    background: #111;
+    border: 1px solid #333;
+    color: #eee;
+    border-radius: 6px;
+    padding: 0.5rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .replies {
+    margin-top: 1rem;
+    margin-right: 1rem;
+    padding-right: 2rem;
+    border-right: 2px dashed #444;
+  }
+
+  .reply-card {
+    background-color: #1a1a1a;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 0.8rem;
+    margin-bottom: 0.6rem;
+    color: #ccc;
+    position: relative;
+  }
+
+  .reply-card strong {
+    color: #ddd;
+    font-weight: bold;
+  }
+
+  .reply-card small {
+    color: #777;
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+  }
+
+  .delete-comment,
+  .delete-reply,
+  .delete-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+  }
+  
+  .delete-btn {
+    background-color: #222;
+    padding: 4px 10px;
+    border: 1px solid #ff4d4d;
+    border-radius: 6px;
+  }
+
+  .logBtn {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -40,26 +226,52 @@
     transition: background 0.3s ease;
   }
 
-  #loginBtn:hover {
+  .logBtn:hover {
     background-color: #ffffff20;
   }
 
-  #loginBtn img {
+  .logBtn img {
     width: 20px;
     height: 20px;
   }
-    .comment-container{
-      direction: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100% !important;
-    }
-    .patch_note{
-      font-size: 12px;
-      text-align: right ;
-      direction: rtl ;
-    }
-  </style>
+
+  .comment-alert {
+    background: #222;
+    color: #0f0;
+    padding: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
+
+  .patch_note {
+    font-size: 12px;
+    text-align: right;
+    direction: rtl;
+    margin-top: 1rem;
+    color: #aaa;
+  }
+  
+  #alertBox{
+    z-index: 999999;
+    position: fixed;
+    top: 4rem;
+    left: 50%;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    
+    font-weight: bold;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(-50%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+
+  }
+</style>
+
 
   </head>
   <h1 class="title">
@@ -96,7 +308,7 @@
              <span></span>
              <span></span>
              </div>
-      <p>$ pwd <br>/<a href="../">home</a>/<a href="./">blog</a>
+      <p>$ pwd <br>/<a href="../">home</a>/<a href="./">comment</a>
       </p>
       <p>$ cd note.txt <br>
       <span class="patch_note">
@@ -107,132 +319,234 @@
 
             <div class="comment-container">
   <h1 dir="rtl"class="home_title_font">#التعليقات </h1>
-  <div id="alertBox"></div>
   <div id="commentsList"></div>
-<button id="loginBtn" dir="rtl">
+  <div id="alertBox"></div>
+<button id="loginBtn"class="logBtn" dir="rtl" style="display:none">
   <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
   <span>يجب تسجيل الدخول عبر Google لكتابة تعليق</span>
 </button>
-
+<button id="logoutBtn" class="logBtn"dir="rtl" style="display:none">
+  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo">
+  <span>تسجيل الخروج</span>
+</button>
   <form id="commentForm" class="comment-form" style="display:none">
     <textarea id="commentInput" placeholder="اكتب  تعليقك..." required></textarea>
     <button type="submit">إرسال التعليق</button>
   </form>
 </div>
 </div>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, serverTimestamp, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
-      authDomain: "oxdyaa.firebaseapp.com",
-      projectId: "oxdyaa",
-      storageBucket: "oxdyaa.appspot.com",
-      messagingSenderId: "604062703590",
-      appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
-    };
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+    authDomain: "oxdyaa.firebaseapp.com",
+    projectId: "oxdyaa",
+    storageBucket: "oxdyaa.appspot.com",
+    messagingSenderId: "604062703590",
+    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
 
-    const loginBtn = document.getElementById('loginBtn');
-    const commentForm = document.getElementById('commentForm');
-    const commentInput = document.getElementById('commentInput');
-    const commentsList = document.getElementById('commentsList');
-    const alertBox = document.getElementById('alertBox');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const commentForm = document.getElementById('commentForm');
+  const commentInput = document.getElementById('commentInput');
+  const commentsList = document.getElementById('commentsList');
+  const alertBox = document.getElementById('alertBox');
 
-    let currentUser = null;
-    loadComments();
+  loginBtn.style.display = "none";
+  logoutBtn.style.display = "none";
+  commentForm.style.display = "none";
 
-    loginBtn.addEventListener('click', async () => {
-      try {
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        currentUser = result.user;
-        showAlert("تم تسجيل الدخول بنجاح!");
-        commentForm.style.display = "block";
-        loginBtn.style.display = "none";
-        loadComments();
-      } catch (error) {
-        console.error(error);
-        showAlert("فشل تسجيل الدخول", true);
-      }
-    });
+  let currentUser = null;
 
+  function showAlert(message, error = false) {
+    alertBox.innerHTML = `<div style="border: 1px solid rgba(255, 255, 255, 0.2);padding:1rem 4rem;color:${error ? 'red' : 'limegreen'}">${message}</div>`;
+    setTimeout(() => alertBox.innerHTML = "", 4000);
+  }
 
-    commentForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = commentInput.value.trim();
-      if (!text || !currentUser) return;
+  function formatDate(date) {
+    const now = new Date();
+    const diff = now - date;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const weeks = Math.floor(days / 7);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(days / 365);
+    if (minutes < 1) return "الآن";
+    if (minutes < 60) return `منذ ${minutes} دقيقة`;
+    if (hours < 24) return `منذ ${hours} ساعة`;
+    if (days < 7) return `منذ ${days} يوم`;
+    if (weeks < 5) return `منذ ${weeks} أسبوع`;
+    if (months < 12) return `منذ ${months} شهر`;
+    return `منذ ${years} سنة`;
+  }
 
-      const name = currentUser.displayName || "زائر";
-      const avatar = currentUser.photoURL || `https://i.pravatar.cc/150?u=${Date.now()}`;
-
-      try {
-        await addDoc(collection(db, "comments"), {
-          name,
-          text,
-          avatar,
-          timestamp: serverTimestamp()
+  async function loadReplies(commentId) {
+    const repliesDiv = document.getElementById(`replies-${commentId}`);
+    repliesDiv.innerHTML = "<small>جاري تحميل الردود...</small>";
+    const q = query(collection(db, "comments", commentId, "replies"), orderBy("timestamp", "asc"));
+    const repliesSnap = await getDocs(q);
+    repliesDiv.innerHTML = "";
+    repliesSnap.forEach(docSnap => {
+      const d = docSnap.data();
+      const replyId = docSnap.id;
+      const timeStr = formatDate(d.timestamp?.toDate() || new Date());
+      const isOwner = true;
+      const replyCard = document.createElement("div");
+      replyCard.className = "reply-card";
+      replyCard.style.cssText = "display:flex;gap:10px;margin-top:10px;";
+      replyCard.innerHTML = `
+        <img src="${d.avatar}" width="30" height="30" style="border-radius:50%; margin-left: 10px;">
+        <div style="flex:1;">
+          <div style="display:flex; align-items: center; gap: 8px;">
+            <strong style="color:#eee;">${d.name}</strong>
+            <small style="color:#aaa;">${timeStr}</small>
+          </div>
+          <div style="margin-top:4px;">${d.text}</div>
+        </div>
+        <span>${isOwner ? `<button class="delete-reply" style="background:none;border:none;cursor:pointer;" data-reply-id="${replyId}" data-comment-id="${commentId}"><ion-icon name="trash-outline"></ion-icon></button>` : ""}</span>
+      `;
+      repliesDiv.appendChild(replyCard);
+      if (isOwner) {
+        const deleteBtn = replyCard.querySelector(".delete-reply");
+        deleteBtn.addEventListener("click", async () => {
+          if (confirm("هل تريد حذف هذا الرد؟")) {
+            await deleteDoc(doc(db, "comments", commentId, "replies", replyId));
+            showAlert("تم حذف الرد!");
+            loadReplies(commentId);
+          }
         });
-        commentForm.reset();
-        showAlert("تم إرسال التعليق!");
-        loadComments();
-      } catch (err) {
-        console.error(err);
-        showAlert("خطأ أثناء الإرسال", true);
       }
     });
+  }
 
-    async function loadComments() {
-      commentsList.innerHTML = "<p style='text-align:center'>جاري تحميل التعليقات...</p>";
-      const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
-      const snap = await getDocs(q);
+  function loadComments() {
+    commentsList.innerHTML = "<p style='text-align:center;color:#aaa' dir='rtl'>جاري تحميل التعليقات...</p>";
+    const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
+    onSnapshot(q, (snapshot) => {
       commentsList.innerHTML = "";
-      snap.forEach(doc => {
-        const d = doc.data();
-        const time = d.timestamp?.toDate().toLocaleString("ar-DZ") || "الآن";
-        commentsList.innerHTML += `
-          <div class="comment-card">
-            <div class="comment-header">
-              <img src="${d.avatar}" alt="${d.name}">
-              <div><strong>${d.name}</strong><br><small>${time}</small></div>
+      snapshot.forEach(docSnap => {
+        const d = docSnap.data();
+        const timeStr = formatDate(d.timestamp?.toDate() || new Date());
+        const commentId = docSnap.id;
+        const isOwner = currentUser?.uid && d.uid && currentUser.uid === d.uid;
+        const commentDiv = document.createElement("div");
+        commentDiv.className = "comment-card";
+        commentDiv.innerHTML = `
+          <div class="comment-header">
+            <img src="${d.avatar}" width="40" height="40" style="border-radius:50%">
+            <div style="flex:1">
+              <strong>${d.name}</strong><br><small>${timeStr}</small>
             </div>
-            <div class="comment-text">${d.text}</div>
+            ${isOwner ? `<button class="delete-comment" data-id="${commentId}"><ion-icon name="trash-outline"></ion-icon></button>` : ""}
+          </div>
+          <div class="comment-text">${d.text}</div>
+          <button class="reply-toggle" data-id="${commentId}"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></button>
+          <div class="replies" id="replies-${commentId}"></div>
+          <div class="reply-form" style="display:none;" data-id="${commentId}">
+            <textarea placeholder="اكتب ردك..." class="reply-input"></textarea>
+            <button class="reply-submit">إرسال</button>
           </div>
         `;
+        commentsList.appendChild(commentDiv);
+
+        if (isOwner) {
+          commentDiv.querySelector(".delete-comment").addEventListener("click", async () => {
+            if (confirm("هل تريد حذف تعليقك؟")) {
+              await deleteDoc(doc(db, "comments", commentId));
+              showAlert("تم حذف التعليق!");
+            }
+          });
+        }
+
+        commentDiv.querySelector(".reply-toggle").addEventListener("click", () => {
+          const form = commentDiv.querySelector(".reply-form");
+          form.style.display = form.style.display === "none" ? "block" : "none";
+        });
+
+        commentDiv.querySelector(".reply-submit").addEventListener("click", async () => {
+          const input = commentDiv.querySelector(".reply-input");
+          const text = input.value.trim();
+          if (!text || !currentUser) return;
+          await addDoc(collection(db, "comments", commentId, "replies"), {
+            name: currentUser.displayName,
+            avatar: currentUser.photoURL || `https://i.pravatar.cc/150?u=${Date.now()}`,
+            uid: currentUser.uid,
+            text,
+            timestamp: serverTimestamp()
+          });
+          input.value = "";
+          loadReplies(commentId);
+        });
+
+        loadReplies(commentId);
       });
+
+      loginBtn.style.display = currentUser ? "none" : "inline-block";
+      logoutBtn.style.display = currentUser ? "inline-block" : "none";
+      commentForm.style.display = currentUser ? "block" : "none";
+    });
+  }
+
+  loginBtn.addEventListener('click', async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      currentUser = result.user;
+      showAlert("تم تسجيل الدخول بنجاح!");
+    } catch (error) {
+      console.error(error);
+      showAlert("فشل تسجيل الدخول", true);
     }
+  });
 
-    function showAlert(message, error = false) {
-      alertBox.innerHTML = `<div class="comment-alert" style="color:${error ? 'red' : '#0f0'}">${message}</div>`;
-      setTimeout(() => alertBox.innerHTML = "", 4000);
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      await signOut(auth);
+      currentUser = null;
+      commentsList.innerHTML = "";
+      showAlert("تم تسجيل الخروج!");
+    } catch (error) {
+      console.error(error);
+      showAlert("فشل تسجيل الخروج", true);
     }
-    function formatDate(date) {
-  const now = new Date();
-  const diff = now - date;
+  });
 
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours   = Math.floor(minutes / 60);
-  const days    = Math.floor(hours / 24);
-  const weeks   = Math.floor(days / 7);
-  const months  = Math.floor(days / 30);
-  const years   = Math.floor(days / 365);
+  commentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = commentInput.value.trim();
+    if (!text || !currentUser) return;
+    try {
+      await addDoc(collection(db, "comments"), {
+        name: currentUser.displayName || "زائر",
+        avatar: currentUser.photoURL || `https://i.pravatar.cc/150?u=${Date.now()}`,
+        uid: currentUser.uid,
+        text,
+        timestamp: serverTimestamp()
+      });
+      commentForm.reset();
+      showAlert("تم إرسال التعليق!");
+    } catch (err) {
+      console.error(err);
+      showAlert("خطأ أثناء الإرسال", true);
+    }
+  });
 
-  if (seconds < 60) return "منذ ثوانٍ";
-  if (minutes < 60) return `منذ ${minutes} دقيقة`;
-  if (hours < 24)   return `منذ ${hours} ساعة`;
-  if (days < 7)     return `منذ ${days} يوم`;
-  if (weeks < 5)    return `منذ ${weeks} أسبوع`;
-  if (months < 12)  return `منذ ${months} شهر`;
-  return `منذ ${years} سنة`;
-}
+  // ✅ فقط هنا يتم تحميل التعليقات بعد التأكد من حالة المستخدم
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    loadComments();
+  });
+</script>
 
-  </script>
     <script src="../js/script.js"></script>
 </body>
 </html>

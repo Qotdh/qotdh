@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>report</title>
-        <link rel="stylesheet" href="../css/style.css" />
+        <link rel="stylesheet" href="../style.css" />
     <link rel="stylesheet" href="../css/en.css" />
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -42,7 +42,7 @@
     font-size: 1rem;
     resize: none;
     min-height: 120px;
-    direction: ltr;
+    direction: rtl;
    }
   #username {
     width: 100%;
@@ -52,7 +52,7 @@
     background: var(--bg-color);
     color: var(--text-color);
     font-size: 1rem;
-    direction: ltr;
+    direction: rtl;
    }
 
    #contactForm textarea:focus, #username:focus{
@@ -200,7 +200,7 @@ img{
   font-size: 1rem;
   width: 100%;
   padding: 0 0.8rem 0.1rem;
-  direction: ltr;
+  direction: rtl;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     background: var(--bg-color);
@@ -242,22 +242,22 @@ img{
       <p>$ pwd <br>/<a href="../">home</a>/<a href="../">report</a>
       </p>
     </div>
-<form id="contactForm">
+<form id="contactForm"dir="rtl">
   <div class="flex_center">
-    <input type="text" id="username" name="username" placeholder="name " required>
+    <input type="text" id="username" name="username" placeholder="الاسم (اختياري)">
 
-    <textarea id="message" name="message" placeholder="bugs  ..." required></textarea>
+    <textarea id="message" name="message" placeholder="صف المشكلة التي واجهتها  ..." required></textarea>
     <label for="image" class="custum-file-upload">
       <div class="text2">
-        <span id="image-name"> screenshot (recoment)</span>
+        <span id="image-name"> لقطة شاشة </span>
       </div>
       <input type="file" id="image" name="image" accept="image/*" onchange="handleFileSelect('image')">
     </label>
   </div>
     <div id="sending-message" style="display: none; color: red; font-weight: bold; margin-top: 10px;" dir="rtl">
-    loading  ...
+    انتظر  ...
 </div>
-    <button type="submit">submit</button>
+    <button type="submit">ارسال</button>
 </form>   
     <div id="alert" class="alert">
         <span class="alert-icon">✅</span>

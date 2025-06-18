@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>login | 0xdya</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../css/en.css">
+  <link rel="stylesheet" href="../css/ar.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: monospace;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .terminal {
+      max-width: 700px;
+      margin: auto;
+      border: 1px solid #555;
+      padding: 20px;
+      background: #000;
+    }
+    .prompt {
+      color: #0f0;
+    }
+    button {
+      display: block;
+      width: 100%;
+      background: none;
+      color: white;
+      border: 1px dashed #fff;
+      padding: 8px;
+      font-family: monospace;
+      font-size: 1rem;
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #fff;
+      color: #000;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      border-bottom: 1px dashed #444;
+      padding-bottom: 10px;
+    }
+    .user-info img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+    #message {
+      color: #0f0;
+      margin-top: 20px;
+      font-size: 0.95rem;
+    }
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
+    p{
+      font-size: 1rem;
+      text-align: justify;
+    }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <div dir="ltr"><span class="prompt">0xdya@auth:~$</span> login</div>
+    <div id="userInfo" class="user-info" style="display:none;">
+      <img id="userPhoto" src="" alt="User Photo">
+      <div id="userName"></div>
+    </div>
+    <div id="login-buttons">
+      <button id="googleLogin">Google Login</button>
+      <button id="githubLogin">GitHub Login</button>
+    </div>
+    <div id="message"></div>
+    <div id="error"></div>
+    <div id="userSection" style="display:none;">
+      <button id="logoutBtn">Logout</button>
+    </div>
+    <br>
+    <div class="home_title_font">
+      <p> => لا يتم جمع معلومات المستخدمين من غير الاسم و صورة الحساب </p>
+      <p> => يمكنك تسجيل الخروج في أي وقت </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      GithubAuthProvider,
+      signInWithPopup,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+      authDomain: "oxdyaa.firebaseapp.com",
+      projectId: "oxdyaa",
+      storageBucket: "oxdyaa.appspot.com",
+      messagingSenderId: "604062703590",
+      appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const providers = {
+      google: new GoogleAuthProvider(),
+      github: new GithubAuthProvider(),
+    };
+
+    const loginBtns = document.getElementById("login-buttons");
+    const userSection = document.getElementById("userSection");
+    const userInfo = document.getElementById("userInfo");
+    const userName = document.getElementById("userName");
+    const userPhoto = document.getElementById("userPhoto");
+    const message = document.getElementById("message");
+    const errorEl = document.getElementById("error");
+
+    function login(provider) {
+      errorEl.textContent = "";
+      signInWithPopup(auth, provider)
+        .catch(err => {
+          console.error(err);
+          errorEl.textContent = "فشل تسجيل الدخول!";
+        });
+    }
+
+    document.getElementById("googleLogin").onclick = () => login(providers.google);
+    document.getElementById("githubLogin").onclick = () => login(providers.github);
+    document.getElementById("logoutBtn").onclick = () => signOut(auth);
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        loginBtns.style.display = "none";
+        userSection.style.display = "block";
+        userInfo.style.display = "flex";
+        userName.textContent = user.displayName || "مستخدم";
+        userPhoto.src = user.photoURL || "https://via.placeholder.com/40";
+        message.textContent = " تم تسجيل الدخول. يمكنك الآن كتابة التعليقات ";
+      } else {
+        loginBtns.style.display = "block";
+        userSection.style.display = "none";
+        userInfo.style.display = "none";
+        message.textContent = "";
+      }
+    });
+  </script>
+</body>
+</html>

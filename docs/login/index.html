@@ -7,38 +7,41 @@
   <link rel="stylesheet" href="../css/en.css">
   <link rel="stylesheet" href="../css/ar.css">
   <link rel="stylesheet" href="../css/style.css">
+      <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <style>
+  *{
+    
+      box-sizing: border-box;
+  }
     body {
       background-color: #000;
-      color: #fff;
+      color: #f5f5dcec;
       font-family: monospace;
       padding: 20px;
       display: flex;
+      height: 100vh;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      overflow: hidden;
-      box-sizing: border-box;
+      
     }
     .terminal {
       max-width: 700px;
       margin: auto;
-      border: 1px solid #555;
+      border: 1px solid beige;
       padding: 20px;
-      background: #000;
     }
     .prompt {
-      color: #0f0;
+      color: #888;
     }
     button {
-      display: block;
+      display: block; 
       width: 100%;
       background: none;
-      color: white;
-      border: 1px dashed #fff;
+      color: #f5f5dcec;
+      border: 1px dashed #888;
       padding: 8px;
       font-family: monospace;
-      font-size: 1rem;
       margin: 10px 0;
       cursor: pointer;
     }
@@ -60,8 +63,7 @@
       border-radius: 50%;
     }
     #message {
-      color: #0f0;
-      margin-top: 20px;
+      color: #0af;
       font-size: 0.95rem;
     }
     #error {
@@ -69,31 +71,86 @@
       margin-top: 10px;
     }
     p{
-      font-size: 1rem;
+      font-size: 14px;
       text-align: justify;
+    }
+    .login_note{
+      width: 100%;
+      padding: 0 20px;
+      border: 1px solid #444;
+      background: #060606;
+      line-height: 1;
+    }
+    ion-icon{
+      margin-bottom: -4px;
+      padding: 0;
+    }
+    .none{
+      display: none;
+    }
+    .flex {
+      display: flex;
+      flex-direction: column;
+    }
+    #loader{
+      margin: 1rem 0 0;
+      inset: 0;
+  background: #000;
+  color: #0af;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-size: 16px;
+    }
+    #loginComand{
+      margin-top: 1.4rem;
+    }
+    .loginComandCode{
+      margin: 0 0 8px;
     }
   </style>
 </head>
 <body>
   <div class="terminal">
-    <div dir="ltr"><span class="prompt">0xdya@auth:~$</span> login</div>
-    <div id="userInfo" class="user-info" style="display:none;">
+    <div class="loginComandCode"dir="ltr"><span class="prompt">0xdya@auth:~$</span> cd login.md</div>
+    <div class="login_note">
+      <img width="100%" src="lain.gif">
+      <p class=""> => لا يتم جمع معلومات المستخدمين  </p>
+      <p class=""> => يمكنك تسجيل الخروج في أي وقت </p>
+    </div>
+    
+    <div id="loader">
+    <span class="doted">جاري التحقق </span></div>
+    <div id="loginComand" class="none" dir="ltr">
+      <span class="prompt">0xdya@auth:~$</span> sudo login</div>
+    <div class="none" dir="ltr" id="userComand" style="text-align:left">
+      <div id="message"></div><br>
+      <span class="prompt" >0xdya@auth:~$</span> acount-info</div>
+      <div class="flex">
+    <div id="userInfo" class="user-info none">
       <img id="userPhoto" src="" alt="User Photo">
       <div id="userName"></div>
     </div>
-    <div id="login-buttons">
-      <button id="googleLogin">Google Login</button>
-      <button id="githubLogin">GitHub Login</button>
+    <div id="userDetails" style="font-size: 13px; line-height: 1.4;"></div></div>
+    <div id="login-buttons" class="none">
+      <button id="googleLogin" dir="ltr"> 
+      <ion-icon name="logo-google"></ion-icon>
+      <span class="home_title_font">
+      تسجيل دخول عبر جوجل
+      </span>
+      </button>
+      <button id="githubLogin" dir="ltr"> 
+      <ion-icon name="logo-github"></ion-icon>
+      <span class="home_title_font">
+      تسجيل دخول عبر جيتهاب
+      </span>
+      </button>
     </div>
-    <div id="message"></div>
     <div id="error"></div>
-    <div id="userSection" style="display:none;">
+    <div id="userSection" class="none">
       <button id="logoutBtn">Logout</button>
-    </div>
-    <br>
-    <div class="home_title_font">
-      <p> => لا يتم جمع معلومات المستخدمين من غير الاسم و صورة الحساب </p>
-      <p> => يمكنك تسجيل الخروج في أي وقت </p>
     </div>
   </div>
 
@@ -127,6 +184,9 @@
     const loginBtns = document.getElementById("login-buttons");
     const userSection = document.getElementById("userSection");
     const userInfo = document.getElementById("userInfo");
+    const userComand = document.getElementById("userComand");
+    const loginComand = document.getElementById("loginComand");
+    const userDetails = document.getElementById("userDetails");
     const userName = document.getElementById("userName");
     const userPhoto = document.getElementById("userPhoto");
     const message = document.getElementById("message");
@@ -147,18 +207,30 @@
 
     onAuthStateChanged(auth, user => {
       if (user) {
-        loginBtns.style.display = "none";
-        userSection.style.display = "block";
-        userInfo.style.display = "flex";
-        userName.textContent = user.displayName || "مستخدم";
-        userPhoto.src = user.photoURL || "https://via.placeholder.com/40";
-        message.textContent = " تم تسجيل الدخول. يمكنك الآن كتابة التعليقات ";
-      } else {
-        loginBtns.style.display = "block";
-        userSection.style.display = "none";
-        userInfo.style.display = "none";
-        message.textContent = "";
-      }
+    loginBtns.style.display = "none";
+    loader.style.display = "none";
+    userSection.style.display = "block";
+    userInfo.style.display = "flex";
+    userComand.style.display = "block";
+    loginComand.style.display = "block";
+userDetails.innerHTML = `
+  <div><strong>📧 البريد:</strong> ${user.email || "غير متاح"}</div>
+  <div><strong>✅ تحقق البريد:</strong> ${user.emailVerified ? "نعم" : "لا"}</div>
+  <div><strong>🔑 الموزع:</strong> ${user.providerData[0]?.providerId || "غير معروف"}</div>
+`;
+
+    userName.textContent = user.displayName || "مستخدم";
+    userPhoto.src = user.photoURL || "https://via.placeholder.com/40";
+    message.textContent = " تم تسجيل الدخول. يمكنك الآن كتابة التعليقات ";
+  } else {
+    loader.style.display = "none";
+    loginBtns.style.display = "block";
+    userSection.style.display = "none";
+    userInfo.style.display = "none";
+    userComand.style.display = "none";
+    loginComand.style.display = "block";
+    message.textContent = "";
+  }
     });
   </script>
 </body>

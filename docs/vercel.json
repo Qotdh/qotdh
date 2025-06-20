@@ -4,9 +4,5 @@
       "source": "/profile/:username",
       "destination": "/profile/index.html"
     }
-  ],
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "redirects": [],
-  "headers": []
+  ]
 }

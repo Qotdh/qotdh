@@ -1,4 +1,3 @@
-<!-- صفحة لتخزين وعرض حسابات المستخدمين المسجلين -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -59,6 +58,7 @@
       getDocs,
       setDoc,
       doc,
+      getDoc,
       serverTimestamp,
       query,
       orderBy
@@ -97,38 +97,35 @@
 
     // حفظ بيانات المستخدم عند تسجيل الدخول
     onAuthStateChanged(auth, async user => {
-  if (user) {
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      // أول مرة - نحفظ createdAt
-      await setDoc(userRef, {
-        name: user.displayName || "بدون اسم",
-        photoURL: user.photoURL || "../img/user3.jpg",
-        lastLogin: serverTimestamp(),
-        createdAt: serverTimestamp(),
-        role: "user"
-      });
-    } else {
-      // موجود - لا نغيّر createdAt
-      await setDoc(userRef, {
-        name: user.displayName || "بدون اسم",
-        photoURL: user.photoURL || "../img/user3.jpg",
-        lastLogin: serverTimestamp(),
-        role: "user"
-      }, { merge: true });
-    }
-  }
-});
-
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (!userSnap.exists()) {
+          // أول مرة - نحفظ createdAt
+          await setDoc(userRef, {
+            name: user.displayName || "بدون اسم",
+            photoURL: user.photoURL || "../img/user3.jpg",
+            lastLogin: serverTimestamp(),
+            createdAt: serverTimestamp(),
+            role: "user"
+          });
+        } else {
+          // موجود - لا نغيّر createdAt
+          await setDoc(userRef, {
+            name: user.displayName || "بدون اسم",
+            photoURL: user.photoURL || "../img/user3.jpg",
+            lastLogin: serverTimestamp(),
+            role: "user"
+          }, { merge: true });
+        }
+      }
+    });
 
     // عرض المستخدمين
     async function loadUsers() {
       const q = query(collection(db, "users"), orderBy("lastLogin", "desc"));
       const snapshot = await getDocs(q);
       usersDiv.innerHTML = "";
-
       snapshot.forEach(docSnap => {
         const user = docSnap.data();
         const created = user.createdAt?.toDate?.();
@@ -138,8 +135,9 @@
         const name = user.name || "مستخدم";
         const photo = user.photoURL || "../img/user3.jpg";
 
+        // ✅ التعديل هنا فقط: استخدم رابط مباشر مثل /profile/Name
         usersDiv.innerHTML += `
-          <div class="user-card" onclick="location.href='profile/index.html?user=${encodeURIComponent(name)}'">
+          <div class="user-card" onclick="location.href='/profile/${encodeURIComponent(name)}'">
             <img src="${photo}" alt="صورة المستخدم">
             <strong>${name}</strong>
             <div class="${roleClass}">الرتبة: ${role}</div>

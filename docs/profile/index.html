@@ -9,7 +9,8 @@
         background-color: #000;
         color: #fff;
         font-family: system-ui, sans-serif;
-        margin: 0;
+        margin: 0 auto;
+        max-width: 600px;
       }
 
       .profile-header {
@@ -36,8 +37,7 @@
       }
 
       .container {
-        padding: 80px 20px 20px;
-        max-width: 600px;
+        padding: 52px 20px 20px;
         margin: auto;
       }
 
@@ -94,7 +94,6 @@
         justify-content: center;
       }
 
-      #currentName
     </style>
   </head>
   <!-- ... نفس الكود أعلاه حتى وسم <body> ... -->
@@ -103,7 +102,7 @@
     <div id="profileContainer" style="display: block;">
       <div class="profile-header">
         <img class="banner-img" src="https://via.placeholder.com/800x200?text=Banner" alt="Banner">
-        <img id="photoPreview" class="profile-pic" src="https://via.placeholder.com/100" alt="Avatar">
+        <img id="photoPreview" class="profile-pic" src="./user3.jpg" alt="Avatar">
       </div>
       <div class="container">
         <div class="name-section">
@@ -114,6 +113,10 @@
         <button id="saveBtn" style="display: none;">حفظ</button>
       </div>
     </div>
+        <div id="userSection" class="none">
+      <button style="display:none"id="logoutBtn">Logout</button>
+    </div>
+ 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
   import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
@@ -137,52 +140,90 @@
   const photoPreview = document.getElementById("photoPreview");
   const loading = document.getElementById("loading");
   const profileContainer = document.getElementById("profileContainer");
+  const logoutBtn = document.getElementById("logoutBtn");
 
   const pathParts = location.pathname.split("/").filter(Boolean);
-let lastPart = pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
-let usernameFromURL = (lastPart && lastPart !== "index.html") ? lastPart : null;
+  let lastPart = pathParts.length > 1 ? pathParts[pathParts.length - 1] : null;
+  const usernameFromURL = (lastPart && lastPart !== "index.html") ? lastPart : null;
+  
+  
 
-onAuthStateChanged(auth, user => {
-  loading.style.display = "none";
-  profileContainer.style.display = "block";
+/*
+  // 🧩 النسخة القديمة - تعتمد على المسار وليس query string
+const urlParams = new URLSearchParams(window.location.search);
+const usernameFromURL = urlParams.get("user");
+*/
 
-  // إذا لم يوجد اسم مستخدم في الرابط و المستخدم مسجل الدخول → أعد التوجيه
-  if (!usernameFromURL && user && user.displayName) {
-    const redirectTo = "/profile/" + user.displayName;
-    history.replaceState(null, "", redirectTo);
-    location.reload(); // نعيد تحميل الصفحة بعد التوجيه لتفعيل الكود الجديد
-    return;
-  }
 
-  currentName.textContent = usernameFromURL || "اسم المستخدم";
-  photoPreview.src = "https://via.placeholder.com/100";
+  onAuthStateChanged(auth, user => {
+    loading.style.display = "none";
+    profileContainer.style.display = "block";
 
-  if (user && user.displayName === usernameFromURL) {
-    editBtn.style.display = "inline-block";
-    photoPreview.src = user.photoURL || "https://via.placeholder.com/100";
+    // إذا لم يوجد اسم مستخدم في الرابط و المستخدم مسجل الدخول → أعد التوجيه
+    if (!usernameFromURL && user && user.displayName) {
+      const redirectTo = `index.html?user=${encodeURIComponent(user.displayName)}`;
+      history.replaceState(null, "", redirectTo);
+      location.reload();
+      return;
+    }
 
-    editBtn.onclick = () => {
-      displayNameInput.style.display = "block";
-      saveBtn.style.display = "inline-block";
-      displayNameInput.value = user.displayName || "";
-    };
+    currentName.textContent = usernameFromURL || "اسم المستخدم";
+    photoPreview.src = "../img/user3.jpg";
 
-    saveBtn.onclick = async () => {
-      try {
-        await updateProfile(user, {
-          displayName: displayNameInput.value
-        });
-        currentName.textContent = displayNameInput.value;
-        displayNameInput.style.display = "none";
-        saveBtn.style.display = "none";
-        alert("تم حفظ الاسم الجديد بنجاح!");
-      } catch (err) {
-        alert("حدث خطأ أثناء الحفظ.");
-        console.error(err);
-      }
-    };
-  }
-});
+    if (user && user.displayName === usernameFromURL) {
+      editBtn.style.display = "inline-block";
+      photoPreview.src = user.photoURL || "../img/user3.jpg";
+
+      editBtn.onclick = () => {
+        displayNameInput.style.display = "block";
+        saveBtn.style.display = "inline-block";
+        displayNameInput.value = user.displayName || "";
+      };
+
+      saveBtn.onclick = async () => {
+        try {
+          await updateProfile(user, {
+            displayName: displayNameInput.value
+          });
+          currentName.textContent = displayNameInput.value;
+          displayNameInput.style.display = "none";
+          saveBtn.style.display = "none";
+          alert("تم حفظ الاسم الجديد بنجاح!");
+        } catch (err) {
+          alert("حدث خطأ أثناء الحفظ.");
+          console.error(err);
+        }
+      };
+    }
+
+    // ✅ هذا هو المكان الصحيح لوضع شرط إظهار زر تسجيل الخروج
+    if (user) {
+  logoutBtn.style.display = "block";
+
+  // ⬇️ تشغيل زر تسجيل الخروج
+  logoutBtn.onclick = async () => {
+    try {
+      await auth.signOut();
+      window.location.href = "/"; // ← غيرها لوجهة مناسبة
+    } catch (error) {
+      alert("حدث خطأ أثناء تسجيل الخروج.");
+      console.error(error);
+    }
+  };
+} else {
+  logoutBtn.style.display = "none";
+}
+// إذا لم يكن المستخدم مسجلاً الدخول أو لا يطابق الاسم في الرابط
+if (!user || user.displayName !== usernameFromURL) {
+  profileContainer.innerHTML = `
+    <div style="text-align: center; padding: 100px 20px; font-size: 24px;">
+      🚫 المستخدم غير موجود
+    </div>
+  `;
+}
+
+  });
 </script>
+
 </body>
 </html>

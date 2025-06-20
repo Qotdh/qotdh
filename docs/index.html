@@ -41,9 +41,14 @@
     </span> 0xDya
    </h1>
    <div class="control">
-    <a class="language" href="./ar/">
-     <ion-icon name="language-outline"></ion-icon>
-    </a>
+   <div class="user_photo">
+<a id="loginIcon" href="./login/">
+  <ion-icon name="person-outline"></ion-icon>
+</a>
+<a class="user_photo_href"href="profile">
+<img id="userAvatar">
+</a>
+   </div>
     <div class="theme_toggle_container">
      <button id="themeToggle">
       <ion-icon name="settings-outline"></ion-icon>
@@ -55,6 +60,8 @@
       <button data-theme="system">تلقائي</button>
      </div>
     </div>
+
+  
    </div>
   </header>
   <div class="container">
@@ -73,23 +80,15 @@
 
     <div class="code-box" id="draggable-box">
     <div class="code_box_content" >
-      <div><span class="tr_txt3"><ion-icon class="amd_ion" name="folder-outline"></ion-icon>
-      أنا</span><br></div>
-
-      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt">الاسم:</span> <span class="tr_txt2">ضياء الدين | 0xdya </span></div>
-      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt">الهدف:</span>
-        <span class="tr_txt2">دعم المحتوى التقني في العالم العربي</span>
-      </div>
-
-      <br>
+      
       <div><span class="tr_txt3"><ion-icon class="amd_ion" name="folder-outline"></ion-icon> عن الموقع</span><br></div>
 
-      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt">تاريخ الإنشاء:</span> <span class="tr_txt2">5 ماي 2025</span></div>
-      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt">آخر تحديث:</span>
+      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt"> تاريخ الإنشاء:</span> <span class="tr_txt2">5 ماي 2025</span></div>
+      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt"> آخر تحديث:</span>
         <span class="tr_txt2 time_ago" >2025-06-03T21:30</span>
       </div>
-      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt">عدد الزيارات:</span>
-        <span class="tr_txt2"><span id="counter"><span class="doted">جارٍ التحميل...</span></span></span>
+      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt"> عدد الزيارات:</span>
+        <span class="tr_txt2"><span id="counter"><span class="doted">جارٍ التحميل </span></span></span> 
       </div>
 
       <br>
@@ -97,11 +96,19 @@
 
       <div class="update-info" id="update-details">
         <p dir="rtl" class="bracket">
-          <span class="doted">جارٍ التحميل...</span><br><!--
+          <span class="doted">جارٍ التحميل </span><br><!--
           (اتصال الإنترنت لديك بطيء جدًا، هل أنت من عام 1994؟ ._.) -->
         </p>
       </div>
-    
+    <br>
+          <div><span class="tr_txt3"><ion-icon class="amd_ion" name="folder-outline"></ion-icon>
+      أنا</span><br></div>
+
+      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt"> الاسم:</span> <span class="tr_txt2">ضياء الدين | 0xdya </span></div>
+      <div class="update_line"> <ion-icon class="row_ion" name="return-down-back-outline"></ion-icon><span class="tr_txt"> الهدف:</span>
+        <span class="tr_txt2">دعم المحتوى التقني في العالم العربي</span>
+      </div>
+
     </div>
     </div>
 
@@ -171,7 +178,53 @@
      </a>
    </div>
   </footer>
+  
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
+  const app = initializeApp({
+    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+    authDomain: "oxdyaa.firebaseapp.com",
+    projectId: "oxdyaa",
+    storageBucket: "oxdyaa.appspot.com",
+    messagingSenderId: "604062703590",
+    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+  });
+
+  const auth = getAuth(app);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const loginIcon = document.getElementById("loginIcon");
+    const userAvatar = document.getElementById("userAvatar");
+    const userName = document.getElementById("userName");
+
+    onAuthStateChanged(auth, user => {
+      console.log("المستخدم:", user); // 👈 راقب هذا في Console
+
+      if (user) {
+        loginIcon.style.display = "none";
+        userAvatar.src = user.photoURL || "https://via.placeholder.com/40";
+        userAvatar.title = user.displayName || user.email || "حساب المستخدم";
+        userAvatar.style.display = "inline-block";
+        userAvatar.style.display = "inline-block";
+userAvatar.style.verticalAlign = "middle";
+userAvatar.style.borderRadius = "50%";
+userAvatar.style.width = "32px";
+userAvatar.style.height = "32px";
+userAvatar.style.margin = "4px 8px 4px 10px";
+userAvatar.style.objectFit = "cover";
+userAvatar.style.marginInlineEnd = "8px";
+
+        userName.textContent = user.displayName || "مستخدم";
+      } else {
+        loginIcon.style.display = "inline-block";
+        userAvatar.style.display = "none";
+        userName.textContent = "";
+      }
+    });
+  });
+</script>
 
  <script type="application/ld+json">
 {

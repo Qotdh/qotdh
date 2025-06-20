@@ -6,8 +6,8 @@
     <title>0xDya - التعليقات</title>
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/en.css" />
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -16,6 +16,8 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
   />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400..700&family=Playpen+Sans+Arabic:wght@100..800&display=swap" rel="stylesheet">
+  <script type="module" src="../js/user.js"></script>
+  
 <style>
 *{
   box-sizing: border-box;
@@ -295,21 +297,29 @@
       </a>
 
 
-      <div class="control">
-        <a class="language" href="../ar/">
-          <ion-icon name="language-outline"></ion-icon>
-        </a>
-        <div class="theme_toggle_container">
-          <button id="themeToggle">
-            <ion-icon name="settings-outline"></ion-icon>
-          </button>
-          <div class="dropdown" id="themeDropdown">
-            <button data-theme="light">light </button>
-            <button data-theme="dark">dark </button>
-            <button data-theme="system">system</button>
-          </div>
-        </div>
-      </div>
+   <div class="control">
+   <div class="user_photo">
+<a id="loginIcon" href="../login/">
+  <ion-icon name="person-outline"></ion-icon>
+</a>
+<a class="user_photo_href"href="profile">
+<img id="userAvatar" style="display:none"src="img/user.jpg">
+</a>
+   </div>
+    <div class="theme_toggle_container">
+     <button id="themeToggle">
+      <ion-icon name="settings-outline"></ion-icon>
+     </button>
+    
+     <div class="dropdown" id="themeDropdown">
+      <button data-theme="light">فاتح </button>
+      <button data-theme="dark">داكن </button>
+      <button data-theme="system">تلقائي</button>
+     </div>
+    </div>
+
+  
+   </div>
     </header>
         <button id="back_to_top"><ion-icon name="chevron-up-circle-outline"></ion-icon></button>
             <div class="container">
@@ -348,6 +358,21 @@
 
 </div>
 </div>
+<script>
+  // عند تحميل الصفحة، حاول عرض الصورة من التخزين المحلي حتى قبل Firebase
+  document.addEventListener("DOMContentLoaded", () => {
+    const userAvatar = document.getElementById("userAvatar");
+    const loginIcon = document.getElementById("loginIcon");
+    const cachedUrl = localStorage.getItem("avatarUrl");
+
+    if (cachedUrl) {
+      userAvatar.src = cachedUrl;
+      userAvatar.style.display = "inline-block";
+      loginIcon.style.display = "none";
+    }
+  });
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import { getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, serverTimestamp, onSnapshot, getDocs, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";

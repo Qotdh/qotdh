@@ -7,7 +7,7 @@ var nodes = new vis.DataSet([
 
   { id: 4, label: 'المشاريع', link: './projects/', x: 100, y: 120 },
 
-  { id: 6, label: 'ادعمني', link: './books/', x: -100, y: 160 },
+  { id: 6, label: 'المستخدمين', link: './users/', x: -100, y: 160 },
 ]);
 
 var edges = new vis.DataSet([
@@ -60,6 +60,7 @@ var options = {
   },
   interaction: {
     dragNodes: true,
+    dragView: true,
     zoomView: true,
     hover: false,
     keyboard: true,
@@ -161,14 +162,14 @@ function fetchUpdateDetails() {
             updateHTML += ``;
 
                 if (data.newFeatures.length > 0) {
-                    updateHTML += ` <div dir="rtl"class="update_line"> <span class="tr_txt ">الإضافات</span>:`;
+                    updateHTML += ` <div dir="rtl"class="update_line"> <span class="tr_txt "><ion-icon class="row_ion" name="return-down-back-outline"></ion-icon> الإضافات</span>:`;
                     data.newFeatures.forEach(feature => {
                         updateHTML += `<span class="tr_txt2">${feature}</span></div>`;
                     });
                 }
 
                 if (data.bugFixes.length > 0) {
-                    updateHTML += ` <div dir="rtl" class="update_line"><span class="tr_txt ">الإصلاحات</span>: `;
+                    updateHTML += ` <div dir="rtl" class="update_line"><span class="tr_txt "><ion-icon class="row_ion" name="return-down-back-outline"></ion-icon> الإصلاحات</span>: `;
                     data.bugFixes.forEach(fix => {
                         updateHTML += `<span class="tr_txt2">${fix}</span></div>`;
                     });

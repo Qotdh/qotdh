@@ -1,174 +1,66 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>  </title>
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: system-ui, sans-serif;
-      margin: 0;
-    }
-    .profile-header {
-      position: relative;
-      height: 200px;
-      background-color: #1c1c1c;
-    }
-    .banner-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .profile-pic {
-      position: absolute;
-      bottom: -50px;
-      left: 20px;
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 4px solid #000;
-      object-fit: cover;
-    }
-    .container {
-      padding: 80px 20px 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-    .name-section {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .name-section span {
-      font-size: 22px;
-      font-weight: bold;
-    }
-    .edit-icon {
-      cursor: pointer;
-      font-size: 18px;
-      color: #1da1f2;
-    }
-    #displayNameInput {
-      display: none;
-      margin-top: 12px;
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 6px;
-      border: 1px solid #333;
-      background: #111;
-      color: #fff;
-    }
-    #saveBtn {
-      display: none;
-      margin-top: 16px;
-      padding: 10px 20px;
-      background: #1da1f2;
-      border: none;
-      color: white;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #saveBtn:hover {
-      background: #1991da;
-    }
-    #loading{
-      width: 100vw;
-      height: 100vh;
-      display: none;
-      align-items: center;
-      justify-content: center;}
-    #currentName
-  </style>
-</head>
-<!-- ... نفس الكود أعلاه حتى وسم <body> ... -->
-<body>
-  <div id="loading">جاري التحميل...</div>
-  <div id="profileContainer" style="display: block;">
-    <div class="profile-header">
-      <img class="banner-img" src="https://via.placeholder.com/800x200?text=Banner" alt="Banner">
-      <img id="photoPreview" class="profile-pic" src="https://via.placeholder.com/100" alt="Avatar">
-    </div>
-    <div class="container">
-      <div class="name-section">
-        <span id="currentName">اسم المستخدم</span>
-        <span class="edit-icon" id="editBtn" style="display: none;">✎</span>
-      </div>
-      <input type="text" id="displayNameInput" placeholder="اسم جديد" style="display: none;">
-      <button id="saveBtn" style="display: none;">حفظ</button>
-    </div>
-  </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+    authDomain: "oxdyaa.firebaseapp.com",
+    projectId: "oxdyaa",
+    storageBucket: "oxdyaa.appspot.com",
+    messagingSenderId: "604062703590",
+    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+  };
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
-      authDomain: "oxdyaa.firebaseapp.com",
-      projectId: "oxdyaa",
-      storageBucket: "oxdyaa.appspot.com",
-      messagingSenderId: "604062703590",
-      appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
-    };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const currentName = document.getElementById("currentName");
+  const displayNameInput = document.getElementById("displayNameInput");
+  const editBtn = document.getElementById("editBtn");
+  const saveBtn = document.getElementById("saveBtn");
+  const photoPreview = document.getElementById("photoPreview");
+  const loading = document.getElementById("loading");
+  const profileContainer = document.getElementById("profileContainer");
 
-    const currentName = document.getElementById("currentName");
-    const displayNameInput = document.getElementById("displayNameInput");
-    const editBtn = document.getElementById("editBtn");
-    const saveBtn = document.getElementById("saveBtn");
-    const photoPreview = document.getElementById("photoPreview");
-    const loading = document.getElementById("loading");
-    const profileContainer = document.getElementById("profileContainer");
+  const pathParts = location.pathname.split("/").filter(Boolean);
+  let lastPart = pathParts[pathParts.length - 1];
+  let usernameFromURL = (lastPart && lastPart !== "index.html") ? lastPart : null;
 
-    const pathSegments = window.location.pathname.split("/");
-const usernameFromURL = pathSegments[pathSegments.length - 1];
+  onAuthStateChanged(auth, user => {
+    if (!usernameFromURL && user) {
+      usernameFromURL = user.displayName || "";
+      history.replaceState(null, "", "/profile/" + usernameFromURL);
+    }
 
+    loading.style.display = "none";
+    profileContainer.style.display = "block";
+    currentName.textContent = usernameFromURL || "اسم المستخدم";
+    photoPreview.src = "https://via.placeholder.com/100";
 
-
-    onAuthStateChanged(auth, user => {
-      if (!user) return;
-
-      // إخفاء التحميل
-      loading.style.display = "none";
-      profileContainer.style.display = "block";
-
-      const isOwner = user.displayName === usernameFromURL;
-
-      currentName.textContent = usernameFromURL || "اسم المستخدم";
+    if (user && user.displayName === usernameFromURL) {
+      editBtn.style.display = "inline-block";
       photoPreview.src = user.photoURL || "https://via.placeholder.com/100";
 
-      if (isOwner) {
-        // السماح بالتعديل فقط لصاحب الحساب
-        editBtn.style.display = "inline-block";
+      editBtn.onclick = () => {
+        displayNameInput.style.display = "block";
+        saveBtn.style.display = "inline-block";
+        displayNameInput.value = user.displayName || "";
+      };
 
-        editBtn.onclick = () => {
-          displayNameInput.style.display = "block";
-          saveBtn.style.display = "inline-block";
-          displayNameInput.value = user.displayName || "";
-        };
-
-        saveBtn.onclick = async () => {
-          try {
-            await updateProfile(user, {
-              displayName: displayNameInput.value
-            });
-            currentName.textContent = displayNameInput.value;
-            displayNameInput.style.display = "none";
-            saveBtn.style.display = "none";
-            alert("تم حفظ الاسم الجديد بنجاح!");
-          } catch (err) {
-            alert("حدث خطأ أثناء الحفظ.");
-            console.error(err);
-          }
-        };
-      }
-    });
-  </script>
-</body>
-</html>
+      saveBtn.onclick = async () => {
+        try {
+          await updateProfile(user, {
+            displayName: displayNameInput.value
+          });
+          currentName.textContent = displayNameInput.value;
+          displayNameInput.style.display = "none";
+          saveBtn.style.display = "none";
+          alert("تم حفظ الاسم الجديد بنجاح!");
+        } catch (err) {
+          alert("حدث خطأ أثناء الحفظ.");
+          console.error(err);
+        }
+      };
+    }
+  });
+</script>

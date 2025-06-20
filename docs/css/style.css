@@ -1,6 +1,7 @@
   * {
   line-height: 1.6;
    font-weight: 400;
+   box-sizing: border-box;
 }
 
 :root {
@@ -72,19 +73,19 @@ body {
    right: 0;
 }
 
-.language,
-#themeToggle {
+ .user_photo a, #themeToggle {
    display: inline-block;
-   padding: 0.5rem 0.8rem;
+   padding: 8px 4px;
    font-size: 1.2rem;
-   cursor: pointer;
    border: none;
    border-radius: 5px;
-   color: white;
    background-color: transparent;
-   color: var(--text-color);
+   color: var(--text-color) !important;
 }
-
+.user_photo_href { padding: 0 !important;}
+#loginIcon{
+  margin-right: 8px;
+}
 /* زر التحكم بالثيم */
 .theme_toggle_container {
    display: inline-block;
@@ -131,7 +132,7 @@ html {
 }
 
 main {
-   padding: 1rem 0 2rem;
+   padding: 0;
    position: relative;
 }
 
@@ -146,7 +147,7 @@ main {
 .container {
    max-width: 800px;
    margin: auto;
-   padding: 2rem;
+   padding: 1rem ;
    display: flex;
    justify-content: center;
    align-items: center;
@@ -199,21 +200,20 @@ nav a:hover {
 .terminal {
   display: flex;
   flex-direction: column;
-   padding: 0 4rem 0 1rem;
+   padding: 1rem;
    background-color: transparent;
    /*
    background-color: #0d1117;
    color: #56d364; */
    margin: 0 auto;
-   width: fit-content;
+   width: 100%;
    position: relative;
 }
 .terminal_bg{
   border: 1px solid #30363d;
   border-radius: 8px;
-  margin: 0 auto;
-  padding: 0;
   width: 100%;
+  
 }
 .terminal-header {
    color: #ffd700;
@@ -225,22 +225,6 @@ code{
   color: var(--terminal-color);
 }
 
-@media (max-width:600px){
-  .terminal {
-  display: flex;
-   padding: 0 8px 1rem;
-    }
-  code{
-  display: none;
-}
-.code-box {
-  width: 400px !important;
-   border-radius: 8px;
-   cursor: grab;
-   padding: 1rem 8px 0!important;
-   font-size: 34px;
-}
-}
 .tr_txt {
    color: var(--terminal-color);
 }
@@ -291,11 +275,10 @@ code{
    border-radius: 8px;
    width: 100%;
    margin: 0 auto;
-   margin-left: -10px;
    position: relative;
    cursor: grab;
    user-select: none;
-   padding: 0 4px;
+   padding: 0;
    font-size: 14px;
 }
 
@@ -327,8 +310,9 @@ code{
 
 .update_line {
    gap: 4px;
-   display: flex;
-   margin-left: 1rem;
+   display: flex inline-block;
+   white-space: nowrap;
+   line-height: 1.6;
 }
 .keyword {
   color: var(--color-keyword);
@@ -508,18 +492,6 @@ article{
   bottom: 0;
   right: 1rem;
 }
-@media (min-width:900px){
-
-.control{
-   right: calc((100% - 800px) / 2);
-}
-.logo_name, .back_to_home{
-   left: calc((100% - 800px) / 2);
-}
-#back_to_top{
-   right: calc((100% - 800px) / 2);
-}
-}
 .animate-up-bouncy {
   filter: blur(12px);
   animation: animateUpBouncy 800ms ease-in-out forwards;
@@ -634,28 +606,7 @@ article{
   display: flex;
   gap: 4px;
 }
-@media (min-width:500px){
-  .terminal {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-}
-.info{
-  display: none;
-}
-  .code-box {
-   border-radius: 8px;
-   width: 100%;
-   margin: 0 auto;
-   margin-left: -10px;
-   position: relative;
-   cursor: grab;
-   user-select: none;
-   padding: 16px 0 ;
-   font-size: 14px;
-}
 
-}
 
 .project_card {
   width: 100%;
@@ -687,7 +638,7 @@ article{
   font-size: var(--body-text) ;
   line-height: 1.6;
   margin: 0 0 1rem;
-  
+  text-align: justify;
 }
 
 .status {
@@ -826,4 +777,83 @@ article{
 
 .username {
   color: #00ffaa;
+}
+.comment_img2{
+  border: 1px solid #fff;
+}
+.account-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: none;
+}
+.account-row:hover{
+  display: flex;
+  align-items: center;
+  width: 90%;
+  text-decoration: none;
+  cursor: none;
+  color: white !important;
+}
+.dots {
+  flex: 1;
+  border-bottom: 1px dotted #888;
+  margin: 0 10px;
+  height: 0.5em;
+}
+
+
+.handle {
+  white-space: nowrap;
+  direction: ltr; /* حتى تبقى أسماء الحسابات كما هي */
+}
+@media (min-width:900px){
+
+.control{
+   right: calc((100% - 800px) / 2);
+}
+.logo_name, .back_to_home{
+   left: calc((100% - 800px) / 2);
+}
+#back_to_top{
+   right: calc((100% - 800px) / 2);
+}
+}
+@media (min-width:500px){
+  .terminal {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+.info{
+  display: none;
+}
+  .code-box {
+   border-radius: 8px;
+   width: 100%;
+   margin: 0 auto;
+   margin-left: -10px;
+   position: relative;
+   cursor: grab;
+   user-select: none;
+   padding: 16px  ;
+   font-size: 14px;
+}
+
+}
+@media (max-width:600px){
+  .terminal {
+    width: 100%;
+  display: flex;
+   padding: 0;
+    }
+  code{
+  display: none;
+}
+.code-box {
+  min-width: 100% !important;
+   border-radius: 8px;
+   cursor: grab;
+   padding: 1rem !important;
+}
 }

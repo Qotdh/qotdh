@@ -2,7 +2,11 @@
   "rewrites": [
     {
       "source": "/profile/:username",
-      "destination": "/docs/profile/index.html"
+      "destination": "/profile/index.html"
     }
-  ]
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [],
+  "headers": []
 }

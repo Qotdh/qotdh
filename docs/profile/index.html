@@ -116,7 +116,79 @@
         <div id="userSection" class="none">
       <button style="display:none"id="logoutBtn">Logout</button>
     </div>
- 
+    <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+    authDomain: "oxdyaa.firebaseapp.com",
+    projectId: "oxdyaa",
+    storageBucket: "oxdyaa.appspot.com",
+    messagingSenderId: "604062703590",
+    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // استخراج اسم المستخدم من الرابط
+  const pathParts = window.location.pathname.split("/");
+  const username = decodeURIComponent(pathParts[pathParts.length - 1]);
+
+  // دالة لعرض الوقت بصيغة "منذ ..."
+  function timeAgo(date) {
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    if (seconds < 60) return "منذ لحظات";
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `منذ ${minutes} دقيقة`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `منذ ${hours} ساعة`;
+    const days = Math.floor(hours / 24);
+    return `منذ ${days} يوم`;
+  }
+
+  // عرض بيانات المستخدم
+  async function loadUser() {
+    const usersCol = await getDocs(collection(db, "users"));
+    let found = false;
+
+    usersCol.forEach(async (docSnap) => {
+      const data = docSnap.data();
+      if (data.name === username) {
+        found = true;
+        const photo = data.photoURL || "../img/user3.jpg";
+        const role = data.role || "user";
+        const createdAt = data.createdAt?.toDate?.();
+        const joined = createdAt ? timeAgo(createdAt) : "—";
+
+        document.body.innerHTML = `
+          <div style="text-align:center; padding:20px; color:white; font-family:sans-serif">
+            <img src="${photo}" alt="الصورة" style="width:100px; height:100px; border-radius:50%">
+            <h2>${data.name}</h2>
+            <div style="color:${role === "admin" ? "#00ff99" : "#aaa"}">الرتبة: ${role}</div>
+            <div style="color:#999; font-size:14px;">تاريخ التسجيل: ${joined}</div>
+          </div>
+        `;
+      }
+    });
+
+    setTimeout(() => {
+      if (!found) {
+        document.body.innerHTML = `<h2 style="color:white; text-align:center;">المستخدم غير موجود</h2>`;
+      }
+    }, 1500);
+  }
+
+  loadUser();
+</script>
+
+ <!-- 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
   import { getAuth, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
@@ -159,13 +231,13 @@ const usernameFromURL = urlParams.get("user");
     loading.style.display = "none";
     profileContainer.style.display = "block";
 
-    // إذا لم يوجد اسم مستخدم في الرابط و المستخدم مسجل الدخول → أعد التوجيه
     if (!usernameFromURL && user && user.displayName) {
       const redirectTo = `index.html?user=${encodeURIComponent(user.displayName)}`;
       history.replaceState(null, "", redirectTo);
       location.reload();
       return;
     }
+    // إذا لم يوجد اسم مستخدم في الرابط و المستخدم مسجل الدخول → أعد التوجيه
 
     currentName.textContent = usernameFromURL || "اسم المستخدم";
     photoPreview.src = "../img/user3.jpg";
@@ -224,6 +296,7 @@ if (!user || user.displayName !== usernameFromURL) {
 
   });
 </script>
+ -->
 
 </body>
 </html>

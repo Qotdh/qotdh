@@ -7,9 +7,6 @@
    font-family: 'Noto Kufi Arabic', sans-serif;
    word-spacing: 2px;
 }
-.home_title_font{
-   font-family: "Playpen Sans Arabic", monospace !important;
-}
 .logo_name{
   direction: ltr !important;
   font-family: "Jetbrains Mono", monospace ;
@@ -22,3 +19,6 @@
    line-height: 1.6;
     font-family: "Playpen Sans Arabic", monospace !important;
   }
+.home_title_font{
+   font-family: "Playpen Sans Arabic", monospace !important;
+}

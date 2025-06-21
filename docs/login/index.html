@@ -153,7 +153,126 @@
       <button id="logoutBtn">Logout</button>
     </div>
   </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
+// ✅ إعداد Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+  authDomain: "oxdyaa.firebaseapp.com",
+  projectId: "oxdyaa",
+  storageBucket: "oxdyaa.appspot.com",
+  messagingSenderId: "604062703590",
+  appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const providers = {
+  google: new GoogleAuthProvider(),
+  github: new GithubAuthProvider()
+};
+
+// ✅ عناصر من الصفحة
+const loginBtns = document.getElementById("login-buttons");
+const userSection = document.getElementById("userSection");
+const userInfo = document.getElementById("userInfo");
+const userComand = document.getElementById("userComand");
+const loginComand = document.getElementById("loginComand");
+const userDetails = document.getElementById("userDetails");
+const userName = document.getElementById("userName");
+const userPhoto = document.getElementById("userPhoto");
+const message = document.getElementById("message");
+const errorEl = document.getElementById("error");
+const loader = document.getElementById("loader");
+
+// ✅ تسجيل الدخول
+function login(provider) {
+  errorEl.textContent = "";
+  signInWithPopup(auth, provider).catch(err => {
+    console.error(err);
+    errorEl.textContent = "فشل تسجيل الدخول!";
+  });
+}
+
+// ✅ أزرار الدخول والخروج
+document.getElementById("googleLogin").onclick = () => login(providers.google);
+document.getElementById("githubLogin").onclick = () => login(providers.github);
+document.getElementById("logoutBtn").onclick = () => signOut(auth);
+
+// ✅ مراقبة تسجيل الدخول
+onAuthStateChanged(auth, async user => {
+  loader.style.display = "none";
+  if (user) {
+    loginBtns.style.display = "none";
+    userSection.style.display = "block";
+    userInfo.style.display = "flex";
+    userComand.style.display = "block";
+    loginComand.style.display = "block";
+
+    userName.textContent = user.displayName || "مستخدم";
+    userPhoto.src = user.photoURL || "https://via.placeholder.com/40";
+    message.textContent = "تم تسجيل الدخول. يمكنك الآن كتابة التعليقات";
+    userDetails.innerHTML = `
+      <div><strong>📧 البريد:</strong> ${user.email || "غير متاح"}</div>
+      <div><strong>✅ تحقق البريد:</strong> ${user.emailVerified ? "نعم" : "لا"}</div>
+      <div><strong>🔑 الموزع:</strong> ${user.providerData[0]?.providerId || "غير معروف"}</div>
+    `;
+
+    // ✅ إنشاء أو تحديث ملف المستخدم باستخدام uid كمفتاح
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    const defaultName = user.displayName || "user_" + user.uid.slice(0, 6);
+
+    if (!userSnap.exists()) {
+      // 🟢 أول مرة يسجل دخول
+      await setDoc(userRef, {
+        uid: user.uid,
+        name: defaultName, // هذا الاسم هو الذي يظهر في رابط البروفايل
+        email: user.email,
+        photo: user.photoURL || "https://via.placeholder.com/40",
+        createdAt: serverTimestamp(),
+        lastLogin: serverTimestamp(),
+        role: "user"
+      });
+    } else {
+      // 🔁 موجود مسبقًا - نحدّث المعلومات
+      await setDoc(userRef, {
+        lastLogin: serverTimestamp(),
+        photo: user.photoURL || "https://via.placeholder.com/40"
+      }, { merge: true });
+    }
+
+  } else {
+    loginBtns.style.display = "block";
+    userSection.style.display = "none";
+    userInfo.style.display = "none";
+    userComand.style.display = "none";
+    loginComand.style.display = "block";
+    message.textContent = "";
+  }
+});
+</script>
+
+<!-- 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import {
@@ -205,33 +324,45 @@
     document.getElementById("githubLogin").onclick = () => login(providers.github);
     document.getElementById("logoutBtn").onclick = () => signOut(auth);
 
-    onAuthStateChanged(auth, user => {
-      if (user) {
-    loginBtns.style.display = "none";
-    loader.style.display = "none";
-    userSection.style.display = "block";
-    userInfo.style.display = "flex";
-    userComand.style.display = "block";
-    loginComand.style.display = "block";
-userDetails.innerHTML = `
-  <div><strong>📧 البريد:</strong> ${user.email || "غير متاح"}</div>
-  <div><strong>✅ تحقق البريد:</strong> ${user.emailVerified ? "نعم" : "لا"}</div>
-  <div><strong>🔑 الموزع:</strong> ${user.providerData[0]?.providerId || "غير معروف"}</div>
-`;
+      onAuthStateChanged(auth, async user => {
+    if (user) {
+      loginBtns.style.display = "none";
+      loader.style.display = "none";
+      userSection.style.display = "block";
+      userInfo.style.display = "flex";
+      userComand.style.display = "block";
+      loginComand.style.display = "block";
 
-    userName.textContent = user.displayName || "مستخدم";
-    userPhoto.src = user.photoURL || "https://via.placeholder.com/40";
-    message.textContent = " تم تسجيل الدخول. يمكنك الآن كتابة التعليقات ";
-  } else {
-    loader.style.display = "none";
-    loginBtns.style.display = "block";
-    userSection.style.display = "none";
-    userInfo.style.display = "none";
-    userComand.style.display = "none";
-    loginComand.style.display = "block";
-    message.textContent = "";
-  }
-    });
+      userDetails.innerHTML = `
+        <div><strong>📧 البريد:</strong> ${user.email || "غير متاح"}</div>
+        <div><strong>✅ تحقق البريد:</strong> ${user.emailVerified ? "نعم" : "لا"}</div>
+        <div><strong>🔑 الموزع:</strong> ${user.providerData[0]?.providerId || "غير معروف"}</div>
+      `;
+      userName.textContent = user.displayName || "مستخدم";
+      userPhoto.src = user.photoURL || "https://via.placeholder.com/40";
+      message.textContent = " تم تسجيل الدخول. يمكنك الآن كتابة التعليقات ";
+
+      // 🔹 تسجيل بيانات المستخدم في Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name: user.displayName || "مستخدم",
+        email: user.email,
+        photoURL: user.photoURL || "https://via.placeholder.com/40",
+        lastLogin: serverTimestamp()
+      }, { merge: true });
+
+    } else {
+      loader.style.display = "none";
+      loginBtns.style.display = "block";
+      userSection.style.display = "none";
+      userInfo.style.display = "none";
+      userComand.style.display = "none";
+      loginComand.style.display = "block";
+      message.textContent = "";
+    }
+  });
+
   </script>
+-->
 </body>
 </html>

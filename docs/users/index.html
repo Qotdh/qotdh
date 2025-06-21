@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>المستخدمون المسجلون</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../fox/lottie.min.js"></script>
   <style>
     body {
       background: #111;
@@ -49,7 +50,19 @@
 </head>
 <body>
   <h1>قائمة المستخدمين المسجلين</h1>
-  <div id="users"></div>
+  <div id="users"> 
+    <div id="lottie"></div>
+  </div>
+ <script>
+       lottie.loadAnimation({
+      container: document.getElementById('lottie'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '../fox/2.json' // المسار المحلي لملف JSON
+    });
+    
+ </script>
   <script type="module">
   import { 
     initializeApp 

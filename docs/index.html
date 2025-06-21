@@ -33,6 +33,22 @@
 
 
  <body dir="rtl">
+
+<div id="warning" style="display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:#111; color:#fff; z-index:9999; padding: 20px; text-align:center; font-family:sans-serif;">
+  <h2>⚠️ لا يمكن عرض الموقع هنا</h2>
+  <p>يبدو أنك فتحت الموقع من  Instagram.</p>
+  <p>اضغط على ⋮ أو (…) في الأعلى واختر "فتح في المتصفح" لمتابعة التصفح بشكل صحيح.</p>
+</div>
+
+<script>
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  if (ua.includes("Instagram") || ua.includes("FBAN") || ua.includes("FBAV")) {
+    document.getElementById('warning').style.display = 'block';
+    document.body.style.overflow = 'hidden'; // منع التمرير
+  }
+</script>
+
+
    <div class="old"></div>
   <header class="h">
    <h1 class="logo_name">
@@ -46,7 +62,7 @@
   <ion-icon name="person-outline"></ion-icon>
 </a>
 <a class="user_photo_href"href="profile">
-<img id="userAvatar">
+<img id="userAvatar" style="display:none"src="img/user.jpg">
 </a>
    </div>
     <div class="theme_toggle_container">
@@ -179,52 +195,7 @@
    </div>
   </footer>
   
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-
-  const app = initializeApp({
-    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
-    authDomain: "oxdyaa.firebaseapp.com",
-    projectId: "oxdyaa",
-    storageBucket: "oxdyaa.appspot.com",
-    messagingSenderId: "604062703590",
-    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
-  });
-
-  const auth = getAuth(app);
-
-  document.addEventListener("DOMContentLoaded", () => {
-    const loginIcon = document.getElementById("loginIcon");
-    const userAvatar = document.getElementById("userAvatar");
-    const userName = document.getElementById("userName");
-
-    onAuthStateChanged(auth, user => {
-      console.log("المستخدم:", user); // 👈 راقب هذا في Console
-
-      if (user) {
-        loginIcon.style.display = "none";
-        userAvatar.src = user.photoURL || "https://via.placeholder.com/40";
-        userAvatar.title = user.displayName || user.email || "حساب المستخدم";
-        userAvatar.style.display = "inline-block";
-        userAvatar.style.display = "inline-block";
-userAvatar.style.verticalAlign = "middle";
-userAvatar.style.borderRadius = "50%";
-userAvatar.style.width = "32px";
-userAvatar.style.height = "32px";
-userAvatar.style.margin = "4px 8px 4px 10px";
-userAvatar.style.objectFit = "cover";
-userAvatar.style.marginInlineEnd = "8px";
-
-        userName.textContent = user.displayName || "مستخدم";
-      } else {
-        loginIcon.style.display = "inline-block";
-        userAvatar.style.display = "none";
-        userName.textContent = "";
-      }
-    });
-  });
-</script>
+  <script type="module" src="./js/user.js"></script>
 
  <script type="application/ld+json">
 {
@@ -264,7 +235,7 @@ userAvatar.style.marginInlineEnd = "8px";
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
 </script>
-  <script type="module" src="./js/view.js"></script>
+<script type="module" src="./js/view.js"></script>
   <script src="./js/script.js"></script>
   <script src="./js/tg.js"></script>
   <script src="./js/time_ago.js"></script>

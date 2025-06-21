@@ -6,6 +6,7 @@
     <title>0xDya - التعليقات</title>
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/en.css" />
+    
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
@@ -283,6 +284,7 @@
   .tr_txt2, .doted{
     text-align: center !important;
   }
+
 </style>
 
 
@@ -341,9 +343,10 @@
 
             <div class="comment-container">
   <h1 dir="rtl"class="home_title_font">#التعليقات </h1>
+   
   <div id="commentsList">
-    <p class="tr_txt2"><span class="doted" dir="rtl">جارٍ التحميل </span></p>
-   </div>
+    <div id="lottie"></div>
+    </div>
   <div id="alertBox"></div>
   <form id="commentForm" class="comment-form" style="display:none">
     <textarea id="commentInput" placeholder="اكتب  تعليقك..." required></textarea>
@@ -608,7 +611,17 @@ onAuthStateChanged(auth, (user) => {
   loadComments();
 });
 </script>
-
+  <script src="../fox/lottie.min.js"></script>
+  <script>
+        lottie.loadAnimation({
+      container: document.getElementById('lottie'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '../fox/2.json' // المسار المحلي لملف JSON
+    });
+    
+  </script>
     <script src="../js/script.js"></script>
 </body>
 </html>

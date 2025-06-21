@@ -1,3 +1,4 @@
+<!-- صفحة لتخزين وعرض حسابات المستخدمين المسجلين -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -49,7 +50,107 @@
 <body>
   <h1>قائمة المستخدمين المسجلين</h1>
   <div id="users"></div>
+  <script type="module">
+  import { 
+    initializeApp 
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 
+  import { 
+    getFirestore,
+    collection,
+    getDocs,
+    getDoc,        // ✅ أضفها هنا
+    setDoc,
+    doc,
+    serverTimestamp,
+    query,
+    orderBy,
+    onSnapshot      // ✅ أضفها هنا بدل سطر منفصل
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+  import { 
+    getAuth, 
+    onAuthStateChanged 
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+    authDomain: "oxdyaa.firebaseapp.com",
+    projectId: "oxdyaa",
+    storageBucket: "oxdyaa.appspot.com",
+    messagingSenderId: "604062703590",
+    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const usersDiv = document.getElementById("users");
+
+  function timeAgo(date) {
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+    if (seconds < 60) return "منذ لحظات";
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `منذ ${minutes} دقيقة`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `منذ ${hours} ساعة`;
+    const days = Math.floor(hours / 24);
+    return `منذ ${days} يوم`;
+  }
+
+  // حفظ بيانات المستخدم
+  onAuthStateChanged(auth, async user => {
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()) {
+        await setDoc(userRef, {
+          name: user.displayName || "بدون اسم",
+          photoURL: user.photoURL || null,
+          lastLogin: serverTimestamp(),
+          createdAt: serverTimestamp(),
+          role: "user"
+        });
+      } else {
+        await setDoc(userRef, {
+          name: user.displayName || "بدون اسم",
+          photoURL: user.photoURL || null,
+          lastLogin: serverTimestamp(),
+          role: "user"
+        }, { merge: true });
+      }
+    }
+  });
+
+  function loadUsers() {
+    const q = query(collection(db, "users"), orderBy("lastLogin", "desc"));
+    onSnapshot(q, (snapshot) => {
+      usersDiv.innerHTML = "";
+      snapshot.forEach(docSnap => {
+        const user = docSnap.data();
+        const created = user.createdAt?.toDate?.();
+        const joinedText = created ? ` ${timeAgo(created)}` : "—";
+        const role = user.role || "user";
+        const roleClass = `role ${role === "admin" ? "admin" : "user"}`;
+        const name = user.name || "بدون اسم";
+        const photo = user.photoURL || "/img/user.jpg"; // ✅ الأفضل استخدام مسار جذري
+        usersDiv.innerHTML += `
+          <div class="user-card" onclick="location.href='../profile/index.html?user=${encodeURIComponent(name)}'">
+            <img src="${photo}" alt="صورة المستخدم" onerror="this.src='/img/user.jpg'">
+            <strong>${name}</strong>
+            <div class="${roleClass}">الرتبة: ${role}</div>
+            <div class="joined">تاريخ الانضمام: ${joinedText}</div>
+          </div>
+        `;
+      });
+    });
+  }
+
+  loadUsers();
+</script>
+
+<!--  bac
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import {
@@ -58,7 +159,6 @@
       getDocs,
       setDoc,
       doc,
-      getDoc,
       serverTimestamp,
       query,
       orderBy
@@ -81,6 +181,7 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
     const usersDiv = document.getElementById("users");
+    import { getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // دالة لعرض الوقت بصيغة "منذ ..."
     function timeAgo(date) {
@@ -94,60 +195,71 @@
       const days = Math.floor(hours / 24);
       return `منذ ${days} يوم`;
     }
+    import { onSnapshot } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    
+    
 
     // حفظ بيانات المستخدم عند تسجيل الدخول
     onAuthStateChanged(auth, async user => {
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (!userSnap.exists()) {
-          // أول مرة - نحفظ createdAt
-          await setDoc(userRef, {
-            name: user.displayName || "بدون اسم",
-            photoURL: user.photoURL || "../img/user3.jpg",
-            lastLogin: serverTimestamp(),
-            createdAt: serverTimestamp(),
-            role: "user"
-          });
-        } else {
-          // موجود - لا نغيّر createdAt
-          await setDoc(userRef, {
-            name: user.displayName || "بدون اسم",
-            photoURL: user.photoURL || "../img/user3.jpg",
-            lastLogin: serverTimestamp(),
-            role: "user"
-          }, { merge: true });
-        }
-      }
-    });
+  if (user) {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+    
+    
+
+    if (!userSnap.exists()) {
+      // أول مرة - نحفظ createdAt
+      await setDoc(userRef, {
+        name: user.displayName || "بدون اسم",
+        photoURL: user.photoURL || null,
+        lastLogin: serverTimestamp(),
+        createdAt: serverTimestamp(),
+        role: "user"
+      });
+    } else {
+      // موجود - لا نغيّر createdAt
+      await setDoc(userRef, {
+        name: user.displayName || "بدون اسم",
+        photoURL: user.photoURL || null,
+
+        lastLogin: serverTimestamp(),
+        role: "user"
+      }, { merge: true });
+    }
+  }
+});
+
 
     // عرض المستخدمين
-    async function loadUsers() {
-      const q = query(collection(db, "users"), orderBy("lastLogin", "desc"));
-      const snapshot = await getDocs(q);
-      usersDiv.innerHTML = "";
-      snapshot.forEach(docSnap => {
-        const user = docSnap.data();
-        const created = user.createdAt?.toDate?.();
-        const joinedText = created ? ` ${timeAgo(created)}` : "—";
-        const role = user.role || "user";
-        const roleClass = `role ${role === "admin" ? "admin" : "user"}`;
-        const name = user.name || "مستخدم";
-        const photo = user.photoURL || "../img/user3.jpg";
+    function loadUsers() {
+  const q = query(collection(db, "users"), orderBy("lastLogin", "desc"));
+  onSnapshot(q, (snapshot) => {
+    usersDiv.innerHTML = "";
+    snapshot.forEach(docSnap => {
+      const user = docSnap.data();
+      const created = user.createdAt?.toDate?.();
+      const joinedText = created ? ` ${timeAgo(created)}` : "—";
+      const role = user.role || "user";
+      const roleClass = `role ${role === "admin" ? "admin" : "user"}`;
+      const name = user.name || "بدون اسم";
+      const photo = user.photoURL || "../img/user.jpg";
 
-        // ✅ التعديل هنا فقط: استخدم رابط مباشر مثل /profile/Name
-        usersDiv.innerHTML += `
-          <div class="user-card" onclick="location.href='/profile/${encodeURIComponent(name)}'">
-            <img src="${photo}" alt="صورة المستخدم">
-            <strong>${name}</strong>
-            <div class="${roleClass}">الرتبة: ${role}</div>
-            <div class="joined">تاريخ الانضمام: ${joinedText}</div>
-          </div>
-        `;
-      });
-    }
+      usersDiv.innerHTML += `
+        <div class="user-card" onclick="location.href='../profile/index.html?user=${encodeURIComponent(name)}'">
+          <img src="${photo}" alt="صورة المستخدم">
+          <strong>${name}</strong>
+          <div class="${roleClass}">الرتبة: ${role}</div>
+          <div class="joined">تاريخ الانضمام: ${joinedText}</div>
+        </div>
+      `;
+    });
+  });
+}
+
+
 
     loadUsers();
   </script>
+-->
 </body>
 </html>

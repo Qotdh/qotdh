@@ -1,153 +1,395 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>المستخدمون المسجلون</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الملف الشخصي</title>
   <style>
     body {
+      background-color: #000;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      margin: 0 auto;
+      max-width: 600px;
+    }
+
+    .profile-header {
+      position: relative;
+      height: 200px;
+      background-color: #1c1c1c;
+    }
+
+    .banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-pic {
+      position: absolute;
+      bottom: -50px;
+      left: 20px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid #000;
+      object-fit: cover;
+    }
+
+    .container {
+      padding: 52px 20px 20px;
+      margin: auto;
+    }
+
+    .name-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .name-section span {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .edit-icon {
+      cursor: pointer;
+      font-size: 18px;
+      color: #1da1f2;
+    }
+
+    #displayNameInput {
+      display: none;
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #333;
       background: #111;
       color: #fff;
-      font-family: sans-serif;
-      text-align: center;
-      padding: 20px;
     }
-    .user-card {
-      background: #1a1a1a;
-      padding: 12px;
-      margin: 10px auto;
-      max-width: 400px;
-      border-radius: 8px;
-      text-align: right;
-      border-bottom: 1px solid #333;
+
+    #saveBtn {
+      display: none;
+      margin-top: 16px;
+      padding: 10px 20px;
+      background: #1da1f2;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
     }
-    .user-card img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      vertical-align: middle;
-      margin-left: 8px;
+
+    #saveBtn:hover {
+      background: #1991da;
     }
-    .role {
-      font-size: 13px;
-      margin-top: 4px;
-    }
-    .role.admin {
-      color: #00ff99;
-    }
-    .role.user {
-      color: #aaa;
-    }
-    .joined {
-      font-size: 12px;
-      color: #aaa;
-      margin-top: 2px;
+
+    #loading {
+      width: 100vw;
+      height: 100vh;
+      display: none;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
-  <h1>قائمة المستخدمين المسجلين</h1>
-  <div id="users"></div>
+  <div id="loading">جاري التحميل...</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      setDoc,
-      doc,
-      getDoc,
-      serverTimestamp,
-      query,
-      orderBy
-    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-    import {
-      getAuth,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  <div id="profileContainer" style="display: none;">
+    <div class="profile-header">
+      <img class="banner-img" src="https://via.placeholder.com/800x200?text=Banner" alt="Banner">
+      <img id="photoPreview" class="profile-pic" src="./user3.jpg" alt="Avatar">
+    </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
-      authDomain: "oxdyaa.firebaseapp.com",
-      projectId: "oxdyaa",
-      storageBucket: "oxdyaa.appspot.com",
-      messagingSenderId: "604062703590",
-      appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
-    };
+    <div class="container">
+      <div class="name-section">
+        <span id="currentName">اسم المستخدم</span>
+        <span class="edit-icon" id="editBtn" style="display: none;">✎</span>
+      </div>
+      <input type="text" id="displayNameInput" placeholder="اسم جديد">
+      <button id="saveBtn">حفظ</button>
+    </div>
+  </div>
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const usersDiv = document.getElementById("users");
+  <button style="display:none" id="logoutBtn">تسجيل الخروج</button>
+ 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-    // دالة لعرض الوقت بصيغة "منذ ..."
-    function timeAgo(date) {
-      const now = new Date();
-      const seconds = Math.floor((now - date) / 1000);
-      if (seconds < 60) return "منذ لحظات";
-      const minutes = Math.floor(seconds / 60);
-      if (minutes < 60) return `منذ ${minutes} دقيقة`;
-      const hours = Math.floor(minutes / 60);
-      if (hours < 24) return `منذ ${hours} ساعة`;
-      const days = Math.floor(hours / 24);
-      return `منذ ${days} يوم`;
-    }
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+    authDomain: "oxdyaa.firebaseapp.com",
+    projectId: "oxdyaa",
+    storageBucket: "oxdyaa.appspot.com",
+    messagingSenderId: "604062703590",
+    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+  };
 
-    // حفظ بيانات المستخدم عند تسجيل الدخول
-    onAuthStateChanged(auth, async user => {
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (!userSnap.exists()) {
-          // أول مرة - نحفظ createdAt
-          await setDoc(userRef, {
-            name: user.displayName || "بدون اسم",
-            photoURL: user.photoURL || "../img/user3.jpg",
-            lastLogin: serverTimestamp(),
-            createdAt: serverTimestamp(),
-            role: "user"
-          });
-        } else {
-          // موجود - لا نغيّر createdAt
-          await setDoc(userRef, {
-            name: user.displayName || "بدون اسم",
-            photoURL: user.photoURL || "../img/user3.jpg",
-            lastLogin: serverTimestamp(),
-            role: "user"
-          }, { merge: true });
-        }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const currentName = document.getElementById("currentName");
+  const displayNameInput = document.getElementById("displayNameInput");
+  const editBtn = document.getElementById("editBtn");
+  const saveBtn = document.getElementById("saveBtn");
+  const photoPreview = document.getElementById("photoPreview");
+  const loading = document.getElementById("loading");
+  const profileContainer = document.getElementById("profileContainer");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  // ✅ جلب الاسم من الرابط /اسم
+  const pathParts = window.location.pathname.split("/");
+  let usernameFromURL = decodeURIComponent(pathParts[pathParts.length - 1]);
+
+  // ✅ تحقق من تسجيل الدخول وأعد التوجيه إذا لم يوجد اسم
+  onAuthStateChanged(auth, async (user) => {
+    if (user && (!usernameFromURL || usernameFromURL === "profile")) {
+      const name = user.displayName;
+      if (name) {
+        const redirect = `/${encodeURIComponent(name)}`;
+        history.replaceState(null, "", redirect);
+        location.reload();
+        return;
       }
-    });
+    }
+    await loadProfile(user);
+  });
 
-    // عرض المستخدمين
-    async function loadUsers() {
-      const q = query(collection(db, "users"), orderBy("lastLogin", "desc"));
-      const snapshot = await getDocs(q);
-      usersDiv.innerHTML = "";
-      snapshot.forEach(docSnap => {
-        const user = docSnap.data();
-        const created = user.createdAt?.toDate?.();
-        const joinedText = created ? ` ${timeAgo(created)}` : "—";
-        const role = user.role || "user";
-        const roleClass = `role ${role === "admin" ? "admin" : "user"}`;
-        const name = user.name || "مستخدم";
-        const photo = user.photoURL || "../img/user3.jpg";
+  // ✅ تحميل البروفايل باستخدام name من Firestore
+  async function loadProfile(currentUser) {
+    loading.style.display = "flex";
+    profileContainer.style.display = "none";
+    if (!usernameFromURL || usernameFromURL === "profile") {
+      showNotFound();
+      return;
+    }
+    try {
+      const q = query(collection(db, "users"), where("name", "==", usernameFromURL));
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const data = userDoc.data();
 
-        // ✅ التعديل هنا فقط: استخدم رابط مباشر مثل /profile/Name
-        usersDiv.innerHTML += `
-          <div class="user-card" onclick="location.href='/profile/${encodeURIComponent(name)}'">
-            <img src="${photo}" alt="صورة المستخدم">
-            <strong>${name}</strong>
-            <div class="${roleClass}">الرتبة: ${role}</div>
-            <div class="joined">تاريخ الانضمام: ${joinedText}</div>
-          </div>
-        `;
-      });
+        currentName.textContent = data.name || usernameFromURL;
+        photoPreview.src = data.photo || "./user3.jpg";
+        profileContainer.style.display = "block";
+
+        if (currentUser && currentUser.uid === userDoc.id) {
+          editBtn.style.display = "inline-block";
+          logoutBtn.style.display = "block";
+
+          editBtn.onclick = () => {
+            displayNameInput.style.display = "block";
+            saveBtn.style.display = "inline-block";
+            displayNameInput.value = data.name || "";
+          };
+
+          saveBtn.onclick = async () => {
+            try {
+              const newName = displayNameInput.value.trim();
+              if (newName) {
+                await updateProfile(currentUser, { displayName: newName });
+                await setDoc(userDoc.ref, { ...data, name: newName });
+                currentName.textContent = newName;
+                displayNameInput.style.display = "none";
+                saveBtn.style.display = "none";
+                alert("تم حفظ الاسم الجديد بنجاح!");
+              }
+            } catch (err) {
+              alert("حدث خطأ أثناء الحفظ.");
+              console.error(err);
+            }
+          };
+
+          logoutBtn.onclick = async () => {
+            try {
+              await signOut(auth);
+              window.location.href = "/";
+            } catch (error) {
+              alert("فشل تسجيل الخروج");
+              console.error(error);
+            }
+          };
+        }
+      } else {
+        showNotFound();
+      }
+    } catch (err) {
+      console.error("حدث خطأ أثناء جلب البيانات:", err);
+      showNotFound();
+    } finally {
+      loading.style.display = "none";
+    }
+  }
+
+  // ✅ عرض رسالة عدم وجود مستخدم
+  function showNotFound() {
+    profileContainer.innerHTML = `
+      <div style="text-align: center; padding: 100px 20px; font-size: 24px;">
+        🚫 المستخدم غير موجود
+      </div>
+    `;
+    profileContainer.style.display = "block";
+  }
+</script>
+
+<!-- bac
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC2U0aM8mUrYoDI0R9pYbzQZk1g9zd96O0",
+    authDomain: "oxdyaa.firebaseapp.com",
+    projectId: "oxdyaa",
+    storageBucket: "oxdyaa.appspot.com",
+    messagingSenderId: "604062703590",
+    appId: "1:604062703590:web:924c0cbd8a988f4fcf8027"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const currentName = document.getElementById("currentName");
+  const displayNameInput = document.getElementById("displayNameInput");
+  const editBtn = document.getElementById("editBtn");
+  const saveBtn = document.getElementById("saveBtn");
+  const photoPreview = document.getElementById("photoPreview");
+  const loading = document.getElementById("loading");
+  const profileContainer = document.getElementById("profileContainer");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  const urlParams = new URLSearchParams(window.location.search);
+  let usernameFromURL = urlParams.get("user");
+
+  // ✅ تحقق من تسجيل الدخول وأعد التوجيه إذا لم يوجد ?user
+  onAuthStateChanged(auth, async (user) => {
+    if (user && !usernameFromURL) {
+      const name = user.displayName;
+      if (name) {
+        const redirect = `?user=${encodeURIComponent(name)}`;
+        history.replaceState(null, "", redirect);
+        location.reload();
+        return;
+      }
+    }
+    await loadProfile(user);
+  });
+
+  // ✅ تحميل البروفايل باستخدام حقل name
+  async function loadProfile(currentUser) {
+    loading.style.display = "flex";
+    profileContainer.style.display = "none";
+
+    if (!usernameFromURL) {
+      showNotFound();
+      return;
     }
 
-    loadUsers();
-  </script>
+    try {
+      const q = query(collection(db, "users"), where("name", "==", usernameFromURL));
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0]; // أول نتيجة
+        const data = userDoc.data();
+
+        currentName.textContent = data.name || usernameFromURL;
+        photoPreview.src = data.photo || "./user3.jpg";
+        profileContainer.style.display = "block";
+
+        // ✅ إذا كنت صاحب الحساب → أظهر أدوات التعديل
+        if (currentUser && currentUser.uid === userDoc.id) {
+          editBtn.style.display = "inline-block";
+          logoutBtn.style.display = "block";
+
+          editBtn.onclick = () => {
+            displayNameInput.style.display = "block";
+            saveBtn.style.display = "inline-block";
+            displayNameInput.value = data.name || "";
+          };
+
+          saveBtn.onclick = async () => {
+            try {
+              const newName = displayNameInput.value.trim();
+              if (newName) {
+                await updateProfile(currentUser, { displayName: newName });
+                await setDoc(userDoc.ref, { ...data, name: newName });
+                currentName.textContent = newName;
+                displayNameInput.style.display = "none";
+                saveBtn.style.display = "none";
+                alert("تم حفظ الاسم الجديد بنجاح!");
+              }
+            } catch (err) {
+              alert("حدث خطأ أثناء الحفظ.");
+              console.error(err);
+            }
+          };
+
+          logoutBtn.onclick = async () => {
+            try {
+              await signOut(auth);
+              window.location.href = "/";
+            } catch (error) {
+              alert("فشل تسجيل الخروج");
+              console.error(error);
+            }
+          };
+        }
+      } else {
+        showNotFound();
+      }
+    } catch (err) {
+      console.error("حدث خطأ أثناء جلب البيانات:", err);
+      showNotFound();
+    } finally {
+      loading.style.display = "none";
+    }
+  }
+
+  // ✅ عرض رسالة عدم وجود مستخدم
+  function showNotFound() {
+    profileContainer.innerHTML = `
+      <div style="text-align: center; padding: 100px 20px; font-size: 24px;">
+        🚫 المستخدم غير موجود
+      </div>
+    `;
+    profileContainer.style.display = "block";
+  }
+</script>
+
+-->
 </body>
 </html>

@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>الملف الشخصي</title>
+  <script src="./fox/lottie.min.js"></script>
+ <script>
+       lottie.loadAnimation({
+      container: document.getElementById('lottie'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '../fox/2.json' // المسار المحلي لملف JSON
+    });
+    
+ </script>  
   <style>
     body {
       background-color: #000;
@@ -86,17 +97,12 @@
       background: #1991da;
     }
 
-    #loading {
-      width: 100vw;
-      height: 100vh;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
   </style>
 </head>
 <body>
-  <div id="loading">جاري التحميل...</div>
+  <div id="loading">
+    <div id="lottie"></div>
+  </div>
 
   <div id="profileContainer" style="display: none;">
     <div class="profile-header">

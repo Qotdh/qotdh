@@ -136,7 +136,7 @@
         const name = user.name || "بدون اسم";
         const photo = user.photoURL || "/img/user.jpg"; // ✅ الأفضل استخدام مسار جذري
         usersDiv.innerHTML += `
-          <div class="user-card" onclick="location.href='../profile/index.html?user=${encodeURIComponent(name)}'">
+          <div class="user-card" onclick="location.href='../profile/${encodeURIComponent(name)}'">
             <img src="${photo}" alt="صورة المستخدم" onerror="this.src='/img/user.jpg'">
             <strong>${name}</strong>
             <div class="${roleClass}">الرتبة: ${role}</div>

@@ -209,21 +209,33 @@
           };
 
           saveBtn.onclick = async () => {
-            try {
-              const newName = displayNameInput.value.trim();
-              if (newName) {
-                await updateProfile(currentUser, { displayName: newName });
-                await setDoc(userDoc.ref, { ...data, name: newName });
-                currentName.textContent = newName;
-                displayNameInput.style.display = "none";
-                saveBtn.style.display = "none";
-                alert("تم حفظ الاسم الجديد بنجاح!");
-              }
-            } catch (err) {
-              alert("حدث خطأ أثناء الحفظ.");
-              console.error(err);
-            }
-          };
+  try {
+    const newName = displayNameInput.value.trim();
+    if (newName) {
+      // ✅ تحقق من تفرد الاسم
+      const nameQuery = query(collection(db, "users"), where("name", "==", newName));
+      const nameSnapshot = await getDocs(nameQuery);
+      const isTaken = !nameSnapshot.empty && nameSnapshot.docs[0].id !== currentUser.uid;
+
+      if (isTaken) {
+        alert("⚠️ هذا الاسم مستخدم من قبل. الرجاء اختيار اسم آخر.");
+        return;
+      }
+
+      // ✅ إذا الاسم فريد → حدث البيانات
+      await updateProfile(currentUser, { displayName: newName });
+      await setDoc(userDoc.ref, { ...data, name: newName });
+      currentName.textContent = newName;
+      displayNameInput.style.display = "none";
+      saveBtn.style.display = "none";
+      alert("✅ تم حفظ الاسم الجديد بنجاح!");
+    }
+  } catch (err) {
+    alert("حدث خطأ أثناء الحفظ.");
+    console.error(err);
+  }
+};
+
 
           logoutBtn.onclick = async () => {
             try {
